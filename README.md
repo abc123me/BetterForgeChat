@@ -16,3 +16,6 @@ I have literally built this mod in one afternoon, and it still needs polish howe
   - No way to enable / disable tab list formatting or nicknames
   - A server might want to disable tab list nicknames to ensure clarity
   - No way to configure chat timestamp
+
+# Development
+I used eclipse to make this project, please feel free to do a pull request for any changes
