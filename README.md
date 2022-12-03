@@ -14,6 +14,7 @@ A Forge based serverside chat mod to allow prefixes, suffixes and integration wi
 
 # Installation
 - Add JAR file to serverside `mods/` folder
+  - Latest version: [Beta 0.1](https://github.com/abc123me/BetterForgeChat/releases/tag/MC1.18.2)
 - *LuckPerms must also be installed on server*
 - *FTB Essentials must also be installed on server*
 - Profit!
