@@ -1,8 +1,10 @@
 # BetterForgeChat
 A Forge based serverside chat mod to allow prefixes, suffixes and integration with LuckPerms and FTB-Essentials nicknames.
 
-### Early-Adopters disclaimer
-***This mod is still a WIP, however, if you are building a modded server on MC1.18.2 there unfortunately is no alternative available due to SpongeForge, Spigot, etc. not supporting MC1.18.2 - this mod only supports MC1.18.2 forge servers for this reason***
+### Why does this exist?
+If you are building a forge modded server on MC1.18.2 there unfortunately are no alternatives available due to SpongeForge not supporting MC1.18.2 - this mod only supports MC1.18.2 forge servers for this reason
+
+***This mod is still a WIP***
 
 ## Features
 ### LuckPerms integration
