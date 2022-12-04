@@ -8,6 +8,7 @@ import com.jeremiahbl.bfcmod.config.ConfigHandler;
 import com.jeremiahbl.bfcmod.config.PermissionsHandler;
 import com.jeremiahbl.bfcmod.utils.BetterForgeChatUtilities;
 
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
@@ -40,6 +41,13 @@ public class ChatEventHandler {
 		Boolean enableStyle = PermissionAPI.getPermission(player, PermissionsHandler.styledChatNode, new PermissionDynamicContext[0]);
 		if(enableColor == null) enableColor = true;
 		if(enableStyle == null) enableStyle = true;
+		String emsg = "";
+		if(!enableColor && TextFormatter.messageContainsColorsOrStyles(msg, true))
+			emsg = "&4&lYou are not permitted to use colors";
+		if(!enableStyle && TextFormatter.messageContainsColorsOrStyles(msg, false))
+			emsg = emsg.length() > 0 ? " or styles" : "&4&lYou are not permitted to use styles";
+		if(emsg.length() > 0)
+			player.sendMessage(new TextComponent(emsg + "!"), ChatType.GAME_INFO, player.getUUID());
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
 		e.setComponent(beforeMsg.append(msgComp.append(afterMsg)));
     }

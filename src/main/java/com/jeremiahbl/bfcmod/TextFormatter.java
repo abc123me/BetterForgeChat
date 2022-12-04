@@ -43,6 +43,20 @@ public final class TextFormatter {
 		return newMsg;
 	}
 
+	public static final boolean messageContainsColorsOrStyles(String msg, boolean checkColors) {
+		boolean checkNext = false;
+		for(int i = 0; i < msg.length(); i++) {
+			char c = msg.charAt(i);
+			if(c == '&') {
+				if(checkNext) checkNext = false;
+				else checkNext = true;
+			} else if(checkNext) {
+				if(checkColors) { if(getColor(c, null) != null) return true; }
+				else { if(getStyle(c, null) != null) return true; }
+			}
+		}
+		return false;
+	}
 	public static final String colorString() {
 		return "&fLight:  &c&&c &e&&e &9&&9 &a&&a &b&&b &d&&d &f&&f &7&&7\n" + 
 			   "&fDark:   &4&&4 &6&&6 &1&&1 &2&&2 &3&&3 &5&&5 &0&&0 &8&&8\n" + 
