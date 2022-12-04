@@ -4,6 +4,31 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TextComponent;
 
 public final class TextFormatter {
+	public static final String RESET_ALL_FORMAT = "&r";
+	
+	public static final String BOLD_FORMAT = "&l";
+	public static final String UNDERLINE_FORMAT = "&l";
+	public static final String ITALIC_FORMAT = "&o";
+	public static final String OBFUSCATED_FORMAT = "&k";
+	public static final String STRIKETHROUGH_FORMAT = "&m";
+	
+	public static final String COLOR_BLACK =        "&0";
+	public static final String COLOR_DARK_BLUE =    "&1";
+	public static final String COLOR_DARK_GREEN =   "&2";
+	public static final String COLOR_DARK_AQUA =    "&3";
+	public static final String COLOR_DARK_RED =     "&4";
+	public static final String COLOR_DARK_PURPLE =  "&5";
+	public static final String COLOR_GOLD =         "&6";
+	public static final String COLOR_GRAY =         "&7";
+	public static final String COLOR_DARK_GRAY =    "&8";
+	public static final String COLOR_BLUE =         "&9";
+	public static final String COLOR_GREEN =        "&a";
+	public static final String COLOR_AQUA =         "&b";
+	public static final String COLOR_RED =          "&c";
+	public static final String COLOR_LIGHT_PURPLE = "&d";
+	public static final String COLOR_YELLOW =       "&e";
+	public static final String COLOR_WHITE =        "&f";
+	
 	public static final TextComponent stringToFormattedText(String msg) {
 		return stringToFormattedText(msg, true, true);
 	}
