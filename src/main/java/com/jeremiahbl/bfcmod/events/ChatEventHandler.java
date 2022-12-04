@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.jeremiahbl.bfcmod.MarkdownFormatter;
 import com.jeremiahbl.bfcmod.TextFormatter;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
 import com.jeremiahbl.bfcmod.config.PermissionsHandler;
@@ -17,8 +18,6 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.server.permission.*;
-import net.minecraftforge.server.permission.nodes.*;
 
 @EventBusSubscriber
 public class ChatEventHandler {
@@ -39,10 +38,8 @@ public class ChatEventHandler {
 		String fmat = ConfigHandler.config.chatMessageFormat.get().replace("$time", tstamp).replace("$name", name);
 		TextComponent beforeMsg = TextFormatter.stringToFormattedText(fmat.substring(0, fmat.indexOf("$msg")));
 		TextComponent afterMsg = TextFormatter.stringToFormattedText(fmat.substring(fmat.indexOf("$msg") + 4, fmat.length()));
-		Boolean enableColor = PermissionAPI.getPermission(player, PermissionsHandler.coloredChatNode, new PermissionDynamicContext[0]);
-		Boolean enableStyle = PermissionAPI.getPermission(player, PermissionsHandler.styledChatNode, new PermissionDynamicContext[0]);
-		if(enableColor == null) enableColor = true;
-		if(enableStyle == null) enableStyle = true;
+		boolean enableColor = PermissionsHandler.playerHasPermission(player, PermissionsHandler.coloredChatNode);
+		boolean enableStyle = PermissionsHandler.playerHasPermission(player, PermissionsHandler.styledChatNode);
 		String emsg = "";
 		if(!enableColor && TextFormatter.messageContainsColorsOrStyles(msg, true))
 			emsg = "You are not permitted to use colors";
@@ -54,6 +51,8 @@ public class ChatEventHandler {
 			ecmp.withStyle(ChatFormatting.RED);
 			player.sendMessage(ecmp, ChatType.GAME_INFO, UUID.randomUUID());
 		}
+		if(enableStyle && PermissionsHandler.playerHasPermission(player, PermissionsHandler.markdownChatNode))
+			msg = MarkdownFormatter.markdownStringToFormattedString(msg);
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
 		e.setComponent(beforeMsg.append(msgComp.append(afterMsg)));
     }
