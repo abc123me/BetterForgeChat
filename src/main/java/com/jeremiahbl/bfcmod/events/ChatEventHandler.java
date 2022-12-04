@@ -2,6 +2,7 @@ package com.jeremiahbl.bfcmod.events;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import com.jeremiahbl.bfcmod.TextFormatter;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
@@ -46,12 +47,12 @@ public class ChatEventHandler {
 		if(!enableColor && TextFormatter.messageContainsColorsOrStyles(msg, true))
 			emsg = "You are not permitted to use colors";
 		if(!enableStyle && TextFormatter.messageContainsColorsOrStyles(msg, false))
-			emsg = emsg.length() > 0 ? " or styles" : "You are not permitted to use styles";
+			emsg += emsg.length() > 0 ? " or styles" : "You are not permitted to use styles";
 		if(emsg.length() > 0) {
 			TextComponent ecmp = new TextComponent(emsg + "!");
 			ecmp.withStyle(ChatFormatting.BOLD);
 			ecmp.withStyle(ChatFormatting.RED);
-			player.sendMessage(ecmp, ChatType.GAME_INFO, player.getUUID());
+			player.sendMessage(ecmp, ChatType.GAME_INFO, UUID.randomUUID());
 		}
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
 		e.setComponent(beforeMsg.append(msgComp.append(afterMsg)));

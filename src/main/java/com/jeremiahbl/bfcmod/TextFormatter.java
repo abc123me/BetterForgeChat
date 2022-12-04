@@ -30,8 +30,8 @@ public final class TextFormatter {
 					if(enableColors) curColor = getColor(c, curColor);
 					if(enableStyles) curStyle = getStyle(c, curStyle);
 					curStr = "";
-					nextIsStyle = false;
 				} else curStr += ("&" + c);
+				nextIsStyle = false;
 			} else curStr += c;
 		}
 		if(curStr.length() > 0) {
