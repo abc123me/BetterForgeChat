@@ -1,6 +1,8 @@
-package com.jeremiahbl.bfcmod.utils;
+package com.jeremiahbl.bfcmod.utils.moddeps;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import com.jeremiahbl.bfcmod.utils.IMetadataProvider;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;

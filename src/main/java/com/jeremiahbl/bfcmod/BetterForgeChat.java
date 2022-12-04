@@ -1,13 +1,8 @@
 package com.jeremiahbl.bfcmod;
 
-import com.jeremiahbl.bfcmod.config.ConfigHandler;
-import com.jeremiahbl.bfcmod.config.PermissionsHandler;
-import com.jeremiahbl.bfcmod.events.ChatEventHandler;
-import com.jeremiahbl.bfcmod.events.CommandRegistrationHandler;
-import com.jeremiahbl.bfcmod.events.ExternalModLoadingEvent;
-import com.jeremiahbl.bfcmod.events.PlayerEventHandler;
-import com.jeremiahbl.bfcmod.utils.IMetadataProvider;
-import com.jeremiahbl.bfcmod.utils.INicknameProvider;
+import com.jeremiahbl.bfcmod.config.*;
+import com.jeremiahbl.bfcmod.events.*;
+import com.jeremiahbl.bfcmod.utils.*;
 import com.mojang.logging.LogUtils;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -18,8 +13,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkConstants;
-import net.minecraftforge.server.permission.PermissionAPI;
-import net.minecraftforge.server.permission.nodes.PermissionNode;
 
 import org.slf4j.Logger;
 
@@ -35,9 +28,9 @@ public class BetterForgeChat {
     
     private ChatEventHandler chatHandler = new ChatEventHandler();
     private ExternalModLoadingEvent modLoadingEvent = new ExternalModLoadingEvent();
-    private CommandRegistrationHandler commandRegistrator = new CommandRegistrationHandler();
     private PlayerEventHandler playerEventHandler = new PlayerEventHandler();
     private PermissionsHandler permissionsHandler = new PermissionsHandler();
+    private CommandRegistrationHandler commandRegistrator = new CommandRegistrationHandler();
     
     public BetterForgeChat() {
     	instance = this;

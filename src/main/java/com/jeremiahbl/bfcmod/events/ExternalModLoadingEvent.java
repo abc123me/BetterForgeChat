@@ -2,8 +2,8 @@ package com.jeremiahbl.bfcmod.events;
 
 import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
-import com.jeremiahbl.bfcmod.utils.FTBNicknameProvider;
-import com.jeremiahbl.bfcmod.utils.LuckPermsProvider;
+import com.jeremiahbl.bfcmod.utils.moddeps.FTBNicknameProvider;
+import com.jeremiahbl.bfcmod.utils.moddeps.LuckPermsProvider;
 
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -1,4 +1,6 @@
-package com.jeremiahbl.bfcmod.utils;
+package com.jeremiahbl.bfcmod.utils.moddeps;
+
+import com.jeremiahbl.bfcmod.utils.INicknameProvider;
 
 import dev.ftb.mods.ftbessentials.FTBEssentials;
 import dev.ftb.mods.ftbessentials.util.FTBEPlayerData;
