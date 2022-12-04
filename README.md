@@ -15,6 +15,8 @@ If you are building a forge modded server on MC1.18.2 there unfortunately are no
 ![screenshots/NicknameAndGroupIntegreation.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/NicknameAndGroupIntegreation.png)
 ### Colors command
 ![screenshots/ColorsCommand.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/ColorsCommand.png)
+### Markdown support
+![screenshots/MarkdownSupport.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/MarkdownSupport.png)
 ### Permissions plugin integration
 Works with any Forge Permissions plugin to provide easy permission management, see the below permissions:
 ```
