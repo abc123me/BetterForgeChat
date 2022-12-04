@@ -1,30 +1,36 @@
 package com.jeremiahbl.bfcmod.events;
 
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
+import com.jeremiahbl.bfcmod.config.IReloadable;
 import com.jeremiahbl.bfcmod.config.PermissionsHandler;
 import com.jeremiahbl.bfcmod.utils.BetterForgeChatUtilities;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.player.PermissionsChangedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.NameFormat;
 import net.minecraftforge.event.entity.player.PlayerEvent.TabListNameFormat;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber
-public class PlayerEventHandler {
+public class PlayerEventHandler implements IReloadable {
+	private boolean enableNicknamesInTabList = false;
+	private boolean enableMetadataInTabList = false;
+	
+	public void reloadConfigOptions() {
+		enableNicknamesInTabList = ConfigHandler.config.enableNicknamesInTabList.get();
+		enableMetadataInTabList = ConfigHandler.config.enableMetadataInTabList.get();
+	}
+	
 	@SubscribeEvent
 	public void onTabListNameFormatEvent(TabListNameFormat e) {
 		if(ConfigHandler.config.enableTabListIntegration.get()) {
 			Player player = e.getPlayer();
 			if(player instanceof ServerPlayer) {
 				ServerPlayer sexyPlayer = (ServerPlayer) player;
-				boolean allowNickname = ConfigHandler.config.enableNicknamesInTabList.get();
-				boolean allowMetadata = ConfigHandler.config.enableMetadataInTabList.get();
-				if(allowNickname) allowNickname = PermissionsHandler.playerHasPermission(sexyPlayer, PermissionsHandler.tabListNicknameNode);
-				if(allowMetadata) allowMetadata = PermissionsHandler.playerHasPermission(sexyPlayer, PermissionsHandler.tabListMetadataNode);
-				e.setDisplayName(BetterForgeChatUtilities.getFormattedPlayerName(sexyPlayer, allowNickname, allowMetadata));
+				e.setDisplayName(BetterForgeChatUtilities.getFormattedPlayerName(sexyPlayer, 
+						enableNicknamesInTabList && PermissionsHandler.playerHasPermission(sexyPlayer, PermissionsHandler.tabListNicknameNode),  
+						enableMetadataInTabList  && PermissionsHandler.playerHasPermission(sexyPlayer, PermissionsHandler.tabListMetadataNode)));
 			}
 		}
 	}
@@ -34,7 +40,7 @@ public class PlayerEventHandler {
 		if(player instanceof ServerPlayer) 
 			e.setDisplayname(BetterForgeChatUtilities.getFormattedPlayerName((ServerPlayer) player));
 	}
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public void onPermissionsChanged(PermissionsChangedEvent e) {
 		Player player = e.getPlayer();
 		if(player instanceof ServerPlayer) {
@@ -43,5 +49,5 @@ public class PlayerEventHandler {
 			ServerPlayer sexyPlayer = (ServerPlayer) player;
 			sexyPlayer.refreshTabListName();
 		}
-	}
+	}*/
 }

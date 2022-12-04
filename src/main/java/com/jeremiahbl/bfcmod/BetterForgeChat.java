@@ -32,9 +32,15 @@ public class BetterForgeChat {
     private PlayerEventHandler playerEventHandler = new PlayerEventHandler();
     private PermissionsHandler permissionsHandler = new PermissionsHandler();
     private CommandRegistrationHandler commandRegistrator = new CommandRegistrationHandler();
+    private ConfigurationEventHandler configurationHandler = new ConfigurationEventHandler();
     
     public BetterForgeChat() {
     	instance = this;
+    	// Register reloadable configuration stuff (reduce some things subscribed to the event bus)
+    	configurationHandler.registerReloadable(playerEventHandler);
+    	configurationHandler.registerReloadable(chatHandler);
+    	configurationHandler.registerReloadable(() -> BetterForgeChat.LOGGER.info("Configuration options loaded!"));
+    	MinecraftForge.EVENT_BUS.register(configurationHandler);
     	// Get the mod loading context (useful for doing stuff)
     	ModLoadingContext mlc = ModLoadingContext.get();
     	// Set mod to ignore whether or not the other side has it (we only care about the server side - but this works on the client's side too)

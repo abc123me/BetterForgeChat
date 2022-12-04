@@ -1,6 +1,6 @@
 package com.jeremiahbl.bfcmod.events;
 
-import com.jeremiahbl.bfcmod.BetterForgeChatCommands;
+import com.jeremiahbl.bfcmod.config.BetterForgeChatCommands;
 
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

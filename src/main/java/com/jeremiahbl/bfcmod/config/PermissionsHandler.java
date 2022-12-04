@@ -1,5 +1,7 @@
 package com.jeremiahbl.bfcmod.config;
 
+import java.lang.reflect.Field;
+
 import com.jeremiahbl.bfcmod.BetterForgeChat;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -24,17 +26,23 @@ public class PermissionsHandler {
 	public static PermissionNode<Boolean> tabListMetadataNode = 
 			ezyPermission("tablist.metadata", true);
 	
-	public static PermissionNode<Boolean> colorsCommand = 
+	public static PermissionNode<Boolean> colorsCommand =
 			ezyPermission("commands.colors", true);
 	public static PermissionNode<Boolean> bfcModCommand = 
-			ezyPermission("commands.bfcmod", true);
+			ezyPermission("commands.bfc.allowed", true);
 	public static PermissionNode<Boolean> bfcModCommandColorsSubCommand = 
-			ezyPermission("commands.bfcmod.colors", true);
+			ezyPermission("commands.bfc.colors", true);
 	public static PermissionNode<Boolean> bfcModCommandInfoSubCommand = 
-			ezyPermission("commands.bfcmod.info", true);
+			ezyPermission("commands.bfc.info", true);
 	
 	@SubscribeEvent public void registerPermissionNodes(Nodes pge) {
-		pge.addNodes(styledChatNode, coloredChatNode, markdownChatNode, tabListMetadataNode, tabListNicknameNode);
+		for(Field fld : PermissionsHandler.class.getDeclaredFields()) {
+			if(fld.getType() == PermissionNode.class) {
+				try { // Fuck adding all these nodes manually
+					pge.addNodes((PermissionNode<?>) fld.get(PermissionNode.class));
+				} catch (Exception e) {}
+			}
+		}
 	}
 	
 	private static PermissionNode<Boolean> ezyPermission(String id, boolean defVal) {
