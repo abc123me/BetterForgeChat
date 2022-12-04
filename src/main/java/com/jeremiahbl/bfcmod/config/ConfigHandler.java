@@ -45,7 +45,7 @@ public class ConfigHandler {
 			enableMarkdown = builder.comment("  Enables or disables markdown styling").define("markdownEnabled", true);
 			enableTabListIntegration = builder.comment("  Enables or disables custom tab list information").define("tabList", true);
 			enableMetadataInTabList = builder.comment("  Enables or disables prefixes&suffixes in the tab list").define("tabListMetadata", true);
-			enableNicknamesInTabList = builder.comment("  Enables or disables nicknames in the tab list").define("tabListNicknames", false);
+			enableNicknamesInTabList = builder.comment("  Enables or disables nicknames in the tab list").define("tabListNicknames", true);
 			enableColorsCommand = builder.comment("  Enables or disables the /colors command").define("enableColorsCommand", true);
 			builder.pop();
 		}
