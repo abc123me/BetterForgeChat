@@ -47,3 +47,4 @@ I used eclipse to make this project, all files included, please feel free to do 
 - Ability to use colors on sign permission
 - Configurable scheduled server announcements
 - Potential discord integration
+- Integrated /nick and /whois commands
