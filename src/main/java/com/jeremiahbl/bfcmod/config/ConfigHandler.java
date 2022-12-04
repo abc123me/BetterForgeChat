@@ -17,6 +17,9 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableTimestamp;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableFtbEssentials;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableLuckPerms;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableTabListIntegration;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableMetadataInTabList;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableNicknamesInTabList;
 		
 		public ConfigBuilder(ForgeConfigSpec.Builder builder) {
 			builder.push("BetterForgeChatModConfig");
@@ -47,6 +50,9 @@ public class ConfigHandler {
 			enableTimestamp = builder.comment("  Enables or disables the filling in of timestamps").define("enableTimestamp", true);
 			enableFtbEssentials = builder.comment("  Enables or disables FTB essentials nickname integration").define("useFtbEssentials", true);
 			enableLuckPerms = builder.comment("  Enables or disables LuckPerms integration").define("useLuckPerms", true);
+			enableTabListIntegration = builder.comment("  Enables or disables custom tab list information").define("tabList", true);
+			enableMetadataInTabList = builder.comment("  Enables or disables prefixes&suffixes in the tab list").define("tabListMetadata", true);
+			enableNicknamesInTabList = builder.comment("  Enables or disables nicknames in the tab list").define("tabListNicknames", false);
 			builder.pop();
 		}
 	}

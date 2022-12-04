@@ -9,9 +9,12 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class BetterForgeChatUtilities {
 	public static String getRawPreferredPlayerName(ServerPlayer player) {
-		String name = BetterForgeChat.instance.nicknameProvider != null ? BetterForgeChat.instance.nicknameProvider.getPlayerChatName(player) : player.getGameProfile().getName();
+		return getRawPreferredPlayerName(player, true, true);
+	}
+	public static String getRawPreferredPlayerName(ServerPlayer player, boolean enableNickname, boolean enableMetadata) {
+		String name = BetterForgeChat.instance.nicknameProvider != null && enableNickname ? BetterForgeChat.instance.nicknameProvider.getPlayerChatName(player) : player.getGameProfile().getName();
 		String pfx = "", sfx = "";
-		if(BetterForgeChat.instance.metadataProvider != null) {
+		if(enableMetadata && BetterForgeChat.instance.metadataProvider != null) {
 			String[] dat = BetterForgeChat.instance.metadataProvider.getPlayerPrefixAndSuffix(player);
 			pfx = dat[0];
 			sfx = dat[1];
@@ -21,5 +24,8 @@ public class BetterForgeChatUtilities {
 	}
 	public static TextComponent getFormattedPlayerName(ServerPlayer player) {
 		return TextFormatter.stringToFormattedText(getRawPreferredPlayerName(player));
+	}
+	public static TextComponent getFormattedPlayerName(ServerPlayer player, boolean enableNickname, boolean enableMetadata) {
+		return TextFormatter.stringToFormattedText(getRawPreferredPlayerName(player, enableNickname, enableMetadata));
 	}
 }

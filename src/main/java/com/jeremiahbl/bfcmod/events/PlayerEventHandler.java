@@ -1,5 +1,6 @@
 package com.jeremiahbl.bfcmod.events;
 
+import com.jeremiahbl.bfcmod.config.ConfigHandler;
 import com.jeremiahbl.bfcmod.utils.BetterForgeChatUtilities;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -13,9 +14,13 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class PlayerEventHandler {
 	@SubscribeEvent
 	public void onTabListNameFormatEvent(TabListNameFormat e) {
-		Player player = e.getPlayer();
-		if(player instanceof ServerPlayer)
-			e.setDisplayName(BetterForgeChatUtilities.getFormattedPlayerName((ServerPlayer) player));
+		if(ConfigHandler.config.enableTabListIntegration.get()) {
+			Player player = e.getPlayer();
+			if(player instanceof ServerPlayer)
+				e.setDisplayName(BetterForgeChatUtilities.getFormattedPlayerName((ServerPlayer) player,
+						ConfigHandler.config.enableNicknamesInTabList.get(),
+						ConfigHandler.config.enableMetadataInTabList.get()));
+		}
 	}
 	@SubscribeEvent
 	public void onNameFormatEvent(NameFormat e) {
