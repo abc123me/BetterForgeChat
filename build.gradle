@@ -142,11 +142,11 @@ repositories {
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    flatDir {
-        dirs 'lib'
-    }
+    //flatDir {
+     //   dirs 'lib'
+    //}
     
-    mavenCentral()
+    //mavenCentral()
 }
 
 dependencies {
@@ -167,9 +167,8 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     
-    compileOnly (fg.deobf('net.luckperms:api:5.4'))
-    runtimeOnly (fg.deobf("luckperms:luckperms-forge:5.4.26"))
-    implementation files("lib/ftb-essentials-1802.1.7-build.42.jar")
+    compileOnly files("lib/luckperms-forge-5.4.26.jar")
+    compileOnly files("lib/ftb-essentials-1802.1.7-build.42.jar")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
