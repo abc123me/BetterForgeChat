@@ -15,8 +15,10 @@ public class BetterForgeChatCommands {
 	private static final Iterable<String> bfcModSubCommands = Arrays.asList(new String[] { "info", "colors" });
 	
 	public static void register(CommandDispatcher<CommandSourceStack> disp) {
-		disp.register(Commands.literal("colors").requires((c) -> {
-			return c.hasPermission(1); }).executes(ctx -> colorCommand(ctx)));
+		if(ConfigHandler.config.enableColorsCommand.get()) {
+			disp.register(Commands.literal("colors").requires((c) -> {
+				return c.hasPermission(1); }).executes(ctx -> colorCommand(ctx)));
+		}
 		disp.register(Commands.literal("bfcmod").requires((c) -> {
 			return c.hasPermission(2); }).then(Commands.argument("mode", StringArgumentType.greedyString())
 					.suggests((context, builder) -> SharedSuggestionProvider.suggest(bfcModSubCommands, builder))

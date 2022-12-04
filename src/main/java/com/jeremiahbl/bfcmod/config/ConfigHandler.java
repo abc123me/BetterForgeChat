@@ -5,7 +5,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class ConfigHandler {
 	private static final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 	public static final ConfigBuilder config = new ConfigBuilder(builder);
-	public static final ForgeConfigSpec spec = builder.build();	
+	public static ForgeConfigSpec spec = builder.build();
 	
 	public static class ConfigBuilder {
 		public final ForgeConfigSpec.ConfigValue<String> playerNameFormat;
@@ -17,6 +17,7 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableTimestamp;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableFtbEssentials;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableLuckPerms;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableColorsCommand;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableTabListIntegration;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableMetadataInTabList;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableNicknamesInTabList;
@@ -53,6 +54,7 @@ public class ConfigHandler {
 			enableTabListIntegration = builder.comment("  Enables or disables custom tab list information").define("tabList", true);
 			enableMetadataInTabList = builder.comment("  Enables or disables prefixes&suffixes in the tab list").define("tabListMetadata", true);
 			enableNicknamesInTabList = builder.comment("  Enables or disables nicknames in the tab list").define("tabListNicknames", false);
+			enableColorsCommand = builder.comment("  Enables or disables the /colors command").define("enableColorsCommand", true);
 			builder.pop();
 		}
 	}
