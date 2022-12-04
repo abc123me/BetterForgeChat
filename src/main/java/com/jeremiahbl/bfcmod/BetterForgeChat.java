@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 @Mod(BetterForgeChat.MODID)
 public class BetterForgeChat {
 	public static final String MODID = "bfcmod";
+	public static final String VERSION = "V1.1";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static BetterForgeChat instance;
 	
