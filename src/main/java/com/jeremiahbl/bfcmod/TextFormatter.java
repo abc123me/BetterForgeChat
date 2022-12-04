@@ -5,6 +5,9 @@ import net.minecraft.network.chat.TextComponent;
 
 public final class TextFormatter {
 	public static final TextComponent stringToFormattedText(String msg) {
+		return stringToFormattedText(msg, true, true);
+	}
+	public static final TextComponent stringToFormattedText(String msg, boolean enableColors, boolean enableStyles) {
 		if(msg == null) return null;
 		TextComponent newMsg = new TextComponent("");
 		boolean nextIsStyle = false;
@@ -19,14 +22,16 @@ public final class TextFormatter {
 					curStr += "&";
 				} else nextIsStyle = true;
 			} else if(nextIsStyle) {
-				TextComponent tmp = new TextComponent(curStr);
-				tmp.withStyle(curStyle);
-				tmp.withStyle(curColor);
-				newMsg.append(tmp);
-				curColor = getColor(c, curColor);
-				curStyle = getStyle(c, curStyle);
-				curStr = "";
-				nextIsStyle = false;
+				if(isColorOrStyle(c)) {
+					TextComponent tmp = new TextComponent(curStr);
+					tmp.withStyle(curStyle);
+					tmp.withStyle(curColor);
+					newMsg.append(tmp);
+					if(enableColors) curColor = getColor(c, curColor);
+					if(enableStyles) curStyle = getStyle(c, curStyle);
+					curStr = "";
+					nextIsStyle = false;
+				} else curStr += ("&" + c);
 			} else curStr += c;
 		}
 		if(curStr.length() > 0) {
@@ -42,6 +47,9 @@ public final class TextFormatter {
 		return "&fLight:  &c&&c &e&&e &9&&9 &a&&a &b&&b &d&&d &f&&f &7&&7\n" + 
 			   "&fDark:   &4&&4 &6&&6 &1&&1 &2&&2 &3&&3 &5&&5 &0&&0 &8&&8\n" + 
 			   "&fStyles: &l&&l&r &n&&n&r &o&&o&r &m&&m&r &k&&k&r\n";
+	}
+	private static final boolean isColorOrStyle(char c) {
+		return getColor(c, null) != null || getStyle(c, null) != null;
 	}
     private static final ChatFormatting getColor(char c, ChatFormatting cur) {
     	switch(c) {
