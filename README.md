@@ -2,9 +2,9 @@
 A Forge based serverside chat mod to allow prefixes, suffixes and integration with LuckPerms and FTB-Essentials nicknames.
 
 ### Why does this exist?
-If you are building a forge modded server on MC1.18.2 there unfortunately are no alternatives available due to SpongeForge not supporting MC1.18.2 - this mod only supports MC1.18.2 forge servers for this reason
+If you are building a forge modded server on MC1.18.2 there unfortunately are no alternatives available due to SpongeForge not supporting MC1.18.2 - this mod only supports MC1.18.2 forge servers for this reason.
 
-***This mod is still a WIP***
+***To date this is the most feature-rich chat mod for Forge 1.18.2 blowing all others out of the water***
 
 ## Features
 ### LuckPerms integration
@@ -15,6 +15,21 @@ If you are building a forge modded server on MC1.18.2 there unfortunately are no
 ![screenshots/NicknameAndGroupIntegreation.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/NicknameAndGroupIntegreation.png)
 ### Colors command
 ![screenshots/ColorsCommand.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/ColorsCommand.png)
+### Permissions plugin integration
+Works with any Forge Permissions plugin to provide easy permission management, see the below permissions:
+```
+- bfcmod.chat.colors
+- bfcmod.chat.styles
+- commands.color
+- commands.colors
+```
+### Highly configurable
+ - Customizable timestamp formats
+ - Customizable tab-list playername formats
+ - All features can be turned on/off easily
+ - Customizable permission nodes
+ - Out-Of-Box integration with LuckPerms and FTBEssentials
+
 
 ## Installation
 - Add JAR file to serverside `mods/` folder
@@ -22,15 +37,6 @@ If you are building a forge modded server on MC1.18.2 there unfortunately are no
 - *LuckPerms must also be installed on server*
 - *FTB Essentials must also be installed on server*
 - Profit!
-
-## Important disclaimer
-I have literally built this mod in one afternoon, and it still needs polish however the core code is quite secure and works extremely well, there are some key things however I have not yet implemented:
-- Chat color permissions, anyone can use chat colors in chat regardless of status 
-- Chat styling permissions, anyone can use chat styles in chat regardless of status 
-- Basic mod configuration file
-  - No way to enable / disable tab list formatting or nicknames
-  - A server might want to disable tab list nicknames to ensure clarity
-  - No way to configure chat timestamp
 
 ## Development
 I used eclipse to make this project, all files included, please feel free to do whatever you want with it
