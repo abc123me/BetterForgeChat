@@ -3,7 +3,9 @@ package com.jeremiahbl.bfcmod.config;
 import java.lang.reflect.Field;
 
 import com.jeremiahbl.bfcmod.BetterForgeChat;
+import com.jeremiahbl.bfcmod.TextFormatter;
 
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -16,24 +18,24 @@ import net.minecraftforge.server.permission.nodes.PermissionTypes;
 @EventBusSubscriber
 public class PermissionsHandler {	
 	public static PermissionNode<Boolean> coloredChatNode = 
-			ezyPermission("chat.colors", true);
+			ezyPermission("chat.colors", true, "Chat colors", "Enables/Disables colors in chat");
 	public static PermissionNode<Boolean> styledChatNode = 
-			ezyPermission("chat.styles", true);
+			ezyPermission("chat.styles", true, "Chat styles", "Enables/Disables styles in chat");
 	public static PermissionNode<Boolean> markdownChatNode = 
-			ezyPermission("chat.styles.md", true);
+			ezyPermission("chat.styles.md", true, "Chat markdown styling", "Enables/Disables markdown styling in chat");
 	public static PermissionNode<Boolean> tabListNicknameNode = 
-			ezyPermission("tablist.nickname", true);
+			ezyPermission("tablist.nickname", true, "Tab list nicknames", "Enables/Disables nicknames showing in the tab list");
 	public static PermissionNode<Boolean> tabListMetadataNode = 
-			ezyPermission("tablist.metadata", true);
+			ezyPermission("tablist.metadata", true, "Tab list metadata", "Enables/Disables prefixes&suffixes showing in the tab list");
 	
 	public static PermissionNode<Boolean> colorsCommand =
-			ezyPermission("commands.colors", true);
+			ezyPermission("commands.colors", true, "Colors command", "Enables/Disables the \"/colors\" command");
 	public static PermissionNode<Boolean> bfcModCommand = 
-			ezyPermission("commands.bfc.allowed", true);
+			ezyPermission("commands.bfc.allowed", true, "BetterForgeChat command", "Enables/Disables the \"/bfc\" command");
 	public static PermissionNode<Boolean> bfcModCommandColorsSubCommand = 
-			ezyPermission("commands.bfc.colors", true);
+			ezyPermission("commands.bfc.colors", true, "BetterForgeChat colors sub-command", "Enables/Disables the \"/bfc colors\" sub-command");
 	public static PermissionNode<Boolean> bfcModCommandInfoSubCommand = 
-			ezyPermission("commands.bfc.info", true);
+			ezyPermission("commands.bfc.info", true, "BetterForgeChat info sub-command", "Enables/Disables the \"/bfc info\" sub-command");
 	
 	@SubscribeEvent public void registerPermissionNodes(Nodes pge) {
 		for(Field fld : PermissionsHandler.class.getDeclaredFields()) {
@@ -45,9 +47,11 @@ public class PermissionsHandler {
 		}
 	}
 	
-	private static PermissionNode<Boolean> ezyPermission(String id, boolean defVal) {
-		return new PermissionNode<Boolean>(BetterForgeChat.MODID, id, 
+	private static PermissionNode<Boolean> ezyPermission(String id, boolean defVal, String name, String desc) {
+		PermissionNode<Boolean> node = new PermissionNode<Boolean>(BetterForgeChat.MODID, id, 
 				PermissionTypes.BOOLEAN, (player, uuid, context) -> defVal);
+		node.setInformation(new TextComponent(name), TextFormatter.stringToFormattedText(desc));
+		return node;
 	}
 
 	public static boolean playerHasPermission(ServerPlayer player, PermissionNode<Boolean> node) {
