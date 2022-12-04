@@ -33,7 +33,7 @@ Works with any Forge Permissions plugin to provide easy permission management, s
 
 ## Installation
 - Add JAR file to serverside `mods/` folder
-  - Latest version: [Beta 0.1](https://github.com/abc123me/BetterForgeChat/releases/tag/MC1.18.2)
+  - Latest version: [Releases](https://github.com/abc123me/BetterForgeChat/releases)
 - *LuckPerms must also be installed on server*
 - *FTB Essentials must also be installed on server*
 - Profit!
