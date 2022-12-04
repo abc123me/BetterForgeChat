@@ -40,3 +40,10 @@ Works with any Forge Permissions plugin to provide easy permission management, s
 
 ## Development
 I used eclipse to make this project, all files included, please feel free to do whatever you want with it
+
+## Planned features
+- MC1.19.2 Support
+- Markdown / Discord like text formatting functionality
+- Ability to use colors on sign permission
+- Configurable scheduled server announcements
+- Potential discord integration
