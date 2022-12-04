@@ -11,8 +11,6 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.ConfigValue<String> playerNameFormat;
 		public final ForgeConfigSpec.ConfigValue<String> chatMessageFormat;
 		public final ForgeConfigSpec.ConfigValue<String> timestampFormat;
-		public final ForgeConfigSpec.ConfigValue<String> coloredChatPermissionName;
-		public final ForgeConfigSpec.ConfigValue<String> styledChatPermissionName;
 		
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableTimestamp;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableFtbEssentials;
@@ -40,14 +38,6 @@ public class ConfigHandler {
 					.comment("  Timestamp format following the java SimpleDateFormat",
 							 "    Read more here: https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html")
 					.define("timestampFormat", "HH:mm");
-			coloredChatPermissionName = builder
-					.comment("  Permission name required to use color chat (automatically starts with \"bfcmod.\")",
-							 "    You probably shouldn't change this unless you really need to")
-					.define("coloredChatPermission", "chat.colors");
-			styledChatPermissionName = builder
-					.comment("  Permission name required to use styles in chat (automatically starts with \"bfcmod.\")",
-							 "    You probably shouldn't change this unless you really need to")
-					.define("styledChatPermission", "chat.styles");
 			enableTimestamp = builder.comment("  Enables or disables the filling in of timestamps").define("enableTimestamp", true);
 			enableFtbEssentials = builder.comment("  Enables or disables FTB essentials nickname integration").define("useFtbEssentials", true);
 			enableLuckPerms = builder.comment("  Enables or disables LuckPerms integration").define("useLuckPerms", true);
