@@ -55,7 +55,13 @@ public class PermissionsHandler {
 	}
 
 	public static boolean playerHasPermission(ServerPlayer player, PermissionNode<Boolean> node) {
-		Boolean bool = PermissionAPI.getPermission(player, node, new PermissionDynamicContext[0]);
+		Boolean bool = false;
+		try {
+			bool = PermissionAPI.getOfflinePermission(player.getUUID(), node, new PermissionDynamicContext[0]);
+			//bool = PermissionAPI.getPermission(player, node, new PermissionDynamicContext[0]);
+		} catch(IllegalStateException ise) {
+			BetterForgeChat.LOGGER.info("IllegalStateException when getting player tab list permissions, assuming false");
+		}
 		return bool == null ? false : bool.booleanValue();
 	}
 }
