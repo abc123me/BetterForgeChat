@@ -2,13 +2,13 @@ package com.jeremiahbl.bfcmod.utils;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import net.minecraft.server.level.ServerPlayer;
+import com.mojang.authlib.GameProfile;
 
 public interface INicknameProvider {
-	public String getPlayerNickname(@NonNull ServerPlayer player);
-	@NonNull public default String getPlayerChatName(@NonNull ServerPlayer player) {
+	public String getPlayerNickname(@NonNull GameProfile player);
+	@NonNull public default String getPlayerChatName(@NonNull GameProfile player) {
 		String nick = getPlayerNickname(player);
-		if(nick == null || nick.length() < 1) return player.getGameProfile().getName();
+		if(nick == null || nick.length() < 1) return player.getName();
 		else return nick;
 	}
 }

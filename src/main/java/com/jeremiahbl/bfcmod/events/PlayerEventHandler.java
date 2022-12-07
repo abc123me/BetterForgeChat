@@ -5,9 +5,9 @@ import com.jeremiahbl.bfcmod.config.IReloadable;
 import com.jeremiahbl.bfcmod.config.PermissionsHandler;
 import com.jeremiahbl.bfcmod.config.PlayerData;
 import com.jeremiahbl.bfcmod.utils.BetterForgeChatUtilities;
+import com.mojang.authlib.GameProfile;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent.LoadFromFile;
 import net.minecraftforge.event.entity.player.PlayerEvent.NameFormat;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
@@ -27,21 +27,17 @@ public class PlayerEventHandler implements IReloadable {
 	
 	@SubscribeEvent
 	public void onTabListNameFormatEvent(TabListNameFormat e) {
-		if(ConfigHandler.config.enableTabListIntegration.get()) {
-			Player player = e.getPlayer();
-			if(player instanceof ServerPlayer) {
-				ServerPlayer sexyPlayer = (ServerPlayer) player;
-				e.setDisplayName(BetterForgeChatUtilities.getFormattedPlayerName(sexyPlayer, 
-						enableNicknamesInTabList && PermissionsHandler.playerHasPermission(sexyPlayer, PermissionsHandler.tabListNicknameNode),  
-						enableMetadataInTabList  && PermissionsHandler.playerHasPermission(sexyPlayer, PermissionsHandler.tabListMetadataNode)));
-			}
+		if(ConfigHandler.config.enableTabListIntegration.get() && e.getPlayer() != null && e.getPlayer() instanceof ServerPlayer) {
+			GameProfile player = e.getPlayer().getGameProfile();
+			e.setDisplayName(BetterForgeChatUtilities.getFormattedPlayerName(player, 
+				enableNicknamesInTabList && PermissionsHandler.playerHasPermission(player.getId(), PermissionsHandler.tabListNicknameNode),  
+				enableMetadataInTabList  && PermissionsHandler.playerHasPermission(player.getId(), PermissionsHandler.tabListMetadataNode)));
 		}
 	}
 	@SubscribeEvent
 	public void onNameFormatEvent(NameFormat e) {
-		Player player = e.getPlayer();
-		if(player instanceof ServerPlayer) 
-			e.setDisplayname(BetterForgeChatUtilities.getFormattedPlayerName((ServerPlayer) player));
+		if(e.getPlayer() != null && e.getPlayer() instanceof ServerPlayer)
+			e.setDisplayname(BetterForgeChatUtilities.getFormattedPlayerName(e.getPlayer().getGameProfile()));
 	}
 	@SubscribeEvent
 	public void onSavePlayerData(SaveToFile e) {

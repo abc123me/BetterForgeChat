@@ -1,12 +1,12 @@
 package com.jeremiahbl.bfcmod.config;
 
 import java.lang.reflect.Field;
+import java.util.UUID;
 
 import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.TextFormatter;
 
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -61,10 +61,10 @@ public class PermissionsHandler {
 		return node;
 	}
 
-	public static boolean playerHasPermission(ServerPlayer player, PermissionNode<Boolean> node) {
+	public static boolean playerHasPermission(UUID uuid, PermissionNode<Boolean> node) {
 		Boolean bool = false;
 		try {
-			bool = PermissionAPI.getOfflinePermission(player.getUUID(), node, new PermissionDynamicContext[0]);
+			bool = PermissionAPI.getOfflinePermission(uuid, node, new PermissionDynamicContext[0]);
 			//bool = PermissionAPI.getPermission(player, node, new PermissionDynamicContext[0]);
 		} catch(IllegalStateException ise) {
 			BetterForgeChat.LOGGER.info("IllegalStateException when getting player tab list permissions, assuming false");

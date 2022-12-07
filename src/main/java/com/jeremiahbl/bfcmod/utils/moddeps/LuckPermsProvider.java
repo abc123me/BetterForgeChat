@@ -3,6 +3,7 @@ package com.jeremiahbl.bfcmod.utils.moddeps;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.jeremiahbl.bfcmod.utils.IMetadataProvider;
+import com.mojang.authlib.GameProfile;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -20,14 +21,15 @@ public class LuckPermsProvider implements IMetadataProvider {
 			throw new NullPointerException("LuckPerms object cannot be null!");
 		this.perms = perms;
 	}
-
-	private @NonNull User playerToUser(@NonNull ServerPlayer player) {
-		return perms.getPlayerAdapter(ServerPlayer.class).getUser(player);
-	}
 	
-	@Override public String[] getPlayerPrefixAndSuffix(ServerPlayer player) {
-		User usr = playerToUser(player);
-		CachedMetaData mdat = usr.getCachedData().getMetaData();
-		return new String[] { mdat.getPrefix(), mdat.getSuffix() };
+	@Override public String[] getPlayerPrefixAndSuffix(GameProfile player) {
+		try {
+			User usr = perms.getUserManager().getUser(player.getId());
+			if(usr == null) return null;
+			CachedMetaData mdat = usr.getCachedData().getMetaData();
+			return new String[] { mdat.getPrefix(), mdat.getSuffix() };
+		} catch(IllegalStateException ise) {
+			return null;
+		}
 	}
 }

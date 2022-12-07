@@ -17,12 +17,13 @@ public class ExternalModLoadingEvent {
 		loadLuckPerms();
 		loadFtbEssentials();
 		loadIntegratedNicknameProvider();
+		//loadDiscordIntegration();
 	}
-	private void setupDiscordIntegration() {
+	/*private void loadDiscordIntegration() {
 		if(ConfigHandler.config.enableDiscordBotIntegration.get()) {
 			
 		}
-	}
+	}*/
 	private void loadIntegratedNicknameProvider() {
 		if (BetterForgeChat.instance.nicknameProvider == null && 
 				ConfigHandler.config.autoEnableChatNicknameCommand.get()) {

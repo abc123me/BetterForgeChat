@@ -67,6 +67,29 @@ public final class TextFormatter {
 		}
 		return newMsg;
 	}
+	public static final String removeTextFormatting(String msg) {
+		if(msg == null) return null;
+		String newMsg = "", curStr = "";
+		boolean nextIsStyle = false;
+		for(int i = 0; i < msg.length(); i++) {
+			char c = msg.charAt(i);
+			if(c == '&') {
+				if(nextIsStyle) {
+					nextIsStyle = false;
+					curStr += "&";
+				} else nextIsStyle = true;
+			} else if(nextIsStyle) {
+				if(isColorOrStyle(c)) {
+					newMsg += curStr;
+					curStr = "";
+				} else curStr += ("&" + c);
+				nextIsStyle = false;
+			} else curStr += c;
+		}
+		if(curStr.length() > 0)
+			newMsg += curStr;
+		return newMsg;
+	}
 
 	public static final boolean messageContainsColorsOrStyles(String msg, boolean checkColors) {
 		boolean checkNext = false;

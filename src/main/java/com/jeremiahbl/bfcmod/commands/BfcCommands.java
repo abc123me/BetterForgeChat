@@ -21,7 +21,7 @@ public class BfcCommands {
 	
 	protected static boolean checkPermission(CommandSourceStack c, PermissionNode<Boolean> node) {
 		try {
-			return PermissionsHandler.playerHasPermission(c.getPlayerOrException(), node);
+			return PermissionsHandler.playerHasPermission(c.getPlayerOrException().getUUID(), node);
 		} catch(CommandSyntaxException e) {
 			// Not a player (console or rcon)
 			return true;
