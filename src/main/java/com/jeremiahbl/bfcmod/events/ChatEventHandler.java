@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.MarkdownFormatter;
 import com.jeremiahbl.bfcmod.TextFormatter;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
@@ -14,12 +13,7 @@ import com.jeremiahbl.bfcmod.utils.BetterForgeChatUtilities;
 import com.mojang.authlib.GameProfile;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,15 +34,19 @@ public class ChatEventHandler implements IReloadable {
 		loaded = true;
 	}
 	
-	public TextComponent getEventComponent(Component old) {
+	private Style getSpecialStyleComponents(Component old) {
 		if(old != null && old instanceof TranslatableComponent) {
 			TranslatableComponent tcmp = (TranslatableComponent) old;
 			Object[] args = tcmp.getArgs();
-			for(Object arg : args)
-				if(arg != null && arg instanceof TextComponent)
-					return (TextComponent) arg;
+			for(Object arg : args) {
+				if(arg != null && arg instanceof TextComponent) {
+					Style sty = ((TextComponent) arg).getStyle();
+					if(sty != null && sty.getHoverEvent() != null)
+						return sty;
+				}
+			}
 		}
-		return new TextComponent("");
+		return null;
 	}
 	
 	@SubscribeEvent
@@ -81,7 +79,9 @@ public class ChatEventHandler implements IReloadable {
 		if(markdownEnabled && enableStyle && PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.markdownChatNode))
 			msg = MarkdownFormatter.markdownStringToFormattedString(msg);
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
-		TextComponent eventComp = getEventComponent(e.getComponent());
-		e.setComponent(eventComp.append(beforeMsg.append(msgComp.append(afterMsg))));
+		Style sty = getSpecialStyleComponents(e.getComponent());
+		TextComponent pfx = new TextComponent("");
+		if(sty != null) pfx.setStyle(sty);
+		e.setComponent(pfx.append(beforeMsg.append(msgComp.append(afterMsg))));
     }
 }

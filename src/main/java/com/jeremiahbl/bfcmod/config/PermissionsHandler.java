@@ -42,7 +42,7 @@ public class PermissionsHandler {
 	public static PermissionNode<Boolean> nickCommand = 
 			ezyPermission("commands.nick", true, "Nickname", "Enables/Disables the \"/nick <nickname>\" command");
 	public static PermissionNode<Boolean> nickOthersCommand = 
-			ezyPermission("commands.nick.others", true, "Modify nicknames", "Enables/Disables the \"/nick <username> <nickname>\" command");
+			ezyPermission("commands.nick.others", false, "Modify nicknames", "Enables/Disables the \"/nick <username> <nickname>\" command");
 	
 	@SubscribeEvent public void registerPermissionNodes(Nodes pge) {
 		for(Field fld : PermissionsHandler.class.getDeclaredFields()) {

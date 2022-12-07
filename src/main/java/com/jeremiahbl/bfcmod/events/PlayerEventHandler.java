@@ -30,8 +30,10 @@ public class PlayerEventHandler implements IReloadable {
 		if(ConfigHandler.config.enableTabListIntegration.get() && e.getPlayer() != null && e.getPlayer() instanceof ServerPlayer) {
 			GameProfile player = e.getPlayer().getGameProfile();
 			e.setDisplayName(BetterForgeChatUtilities.getFormattedPlayerName(player, 
-				enableNicknamesInTabList && PermissionsHandler.playerHasPermission(player.getId(), PermissionsHandler.tabListNicknameNode),  
-				enableMetadataInTabList  && PermissionsHandler.playerHasPermission(player.getId(), PermissionsHandler.tabListMetadataNode)));
+				enableNicknamesInTabList && 
+					PermissionsHandler.playerHasPermission(player.getId(), PermissionsHandler.tabListNicknameNode),  
+				enableMetadataInTabList  && 
+					PermissionsHandler.playerHasPermission(player.getId(), PermissionsHandler.tabListMetadataNode)));
 		}
 	}
 	@SubscribeEvent
