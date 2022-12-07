@@ -41,13 +41,17 @@ public class ChatEventHandler implements IReloadable {
 		loaded = true;
 	}
 	
-	public Style getEventComponent(Component old) {
+	public Style getHoverClickEventStyle(Component old) {
 		if(old != null && old instanceof TranslatableComponent) {
 			TranslatableComponent tcmp = (TranslatableComponent) old;
 			Object[] args = tcmp.getArgs();
-			for(Object arg : args)
-				if(arg != null && arg instanceof TextComponent)
-					return ((TextComponent) arg).getStyle();
+			for(Object arg : args) {
+				if(arg != null && arg instanceof TextComponent) {
+					TextComponent tc = (TextComponent) arg;
+					if(tc.getStyle() != null && tc.getStyle().getClickEvent() != null)
+						return ((TextComponent) arg).getStyle();
+				}
+			}
 		}
 		return null;
 	}
@@ -68,6 +72,7 @@ public class ChatEventHandler implements IReloadable {
 		TextComponent afterMsg = TextFormatter.stringToFormattedText(fmat.substring(fmat.indexOf("$msg") + 4, fmat.length()));
 		boolean enableColor = PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.coloredChatNode);
 		boolean enableStyle = PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.styledChatNode);
+		// Create an error message if the plyer isn't allowed to use styles/colors
 		String emsg = "";
 		if(!enableColor && TextFormatter.messageContainsColorsOrStyles(msg, true))
 			emsg = "You are not permitted to use colors";
@@ -79,10 +84,13 @@ public class ChatEventHandler implements IReloadable {
 			ecmp.withStyle(ChatFormatting.RED);
 			player.sendMessage(ecmp, ChatType.GAME_INFO, UUID.randomUUID());
 		}
+		// Convert markdown to normal essentials formatting
 		if(markdownEnabled && enableStyle && PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.markdownChatNode))
 			msg = MarkdownFormatter.markdownStringToFormattedString(msg);
+		// Start generating the main TextComponent
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
-		Style sty = getEventComponent(e.getComponent());
+		// Append the hover and click event crap
+		Style sty = getHoverClickEventStyle(e.getComponent());
 		TextComponent ecmp = new TextComponent("");
 		if(sty != null && sty.getHoverEvent() != null)
 			ecmp.setStyle(sty);
