@@ -18,13 +18,8 @@ If you are building a forge modded server on MC1.18.2 there unfortunately are no
 ### Markdown support
 ![screenshots/MarkdownSupport.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/MarkdownSupport.png)
 ### Permissions plugin integration
-Works with any Forge Permissions plugin to provide easy permission management, see the below permissions:
-```
-- bfcmod.chat.colors
-- bfcmod.chat.styles
-- commands.color
-- commands.colors
-```
+Works with any Forge Permissions plugin to provide easy permission management, see the permissions (on the WiKi)[https://github.com/abc123me/BetterForgeChat/wiki]
+
 ### Highly configurable
  - Customizable timestamp formats
  - Customizable tab-list playername formats
@@ -34,8 +29,8 @@ Works with any Forge Permissions plugin to provide easy permission management, s
 
 
 ## Installation
+- Get the latest version off (CurseForge)[https://www.curseforge.com/minecraft/mc-mods/betterforgechat-with-luckperms-support/files]
 - Add JAR file to serverside `mods/` folder
-  - Latest version: [Releases](https://github.com/abc123me/BetterForgeChat/releases)
 - Profit!
 
 ## Development
@@ -43,7 +38,6 @@ I used eclipse to make this project, all files included, please feel free to do 
 
 ## Planned features
 - MC1.19.2 Support
-- Markdown / Discord like text formatting functionality
 - Ability to use colors on sign permission
 - Configurable scheduled server announcements
 - Potential discord integration
