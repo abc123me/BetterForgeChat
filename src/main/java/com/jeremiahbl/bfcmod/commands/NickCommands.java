@@ -35,7 +35,7 @@ public class NickCommands {
 			int oldMin = minNicknameLength;
 			minNicknameLength = maxNicknameLength;
 			maxNicknameLength = oldMin;
-			BetterForgeChat.LOGGER.warn("Minimum nickname lenght was greater then maximum, swapped vales");
+			BetterForgeChat.LOGGER.warn("Minimum nickname length was greater then maximum, swapped vales");
 			BetterForgeChat.LOGGER.warn(minNicknameLength + " < nickname.length() < " + maxNicknameLength);
 		}
 		cfgWhoIsEnabled = ConfigHandler.config.enableWhoisCommand.get();
@@ -51,7 +51,7 @@ public class NickCommands {
 		disp.register(Commands.literal("nick").requires((c) -> {
 			return (nicknameIntegrationEnabled || cfgNickEnabled) &&
 				(BfcCommands.checkPermission(c, PermissionsHandler.nickCommand));
-		}).then(Commands.argument("nickname", StringArgumentType.string())
+		}).then(Commands.argument("nickname", StringArgumentType.greedyString())
 			.executes((ctx) -> nickCommand(ctx, false, false))));
 		/* /nickfor <username> <nickname> */
 		disp.register(Commands.literal("nickfor").requires((c) -> {
@@ -59,7 +59,7 @@ public class NickCommands {
 					(BfcCommands.checkPermission(c, PermissionsHandler.nickOthersCommand)); })
 				.then(Commands.argument("username", StringArgumentType.string())
 				//.suggests((ctx, builder) -> SharedSuggestionProvider.sugg)
-				.then(Commands.argument("nickname", StringArgumentType.string())
+				.then(Commands.argument("nickname", StringArgumentType.greedyString())
 				.executes((ctx) -> nickCommand(ctx, false, true)))));
 		/* /nickfor <username> */
 		disp.register(Commands.literal("nickfor").requires((c) -> {
@@ -98,7 +98,7 @@ public class NickCommands {
 		String user = StringArgumentType.getString(ctx, "displayname");
 		GameProfile prof = lookupGameProfile(user);
 		if(prof != null) {
-			ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText("Found a name matching " + user + ": \"" + prof.getName() + "\"\nUUID: " + prof.getId()), false);
+			ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText("&eFound a name matching " + user + ": \"" + prof.getName() + "\"\n&eUUID: " + prof.getId() + "&r"), false);
 			return 1;
 		} else {
 			ctx.getSource().sendFailure(TextFormatter.stringToFormattedText("&cUnknown username/nickname!&r"));

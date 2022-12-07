@@ -19,17 +19,16 @@ public class BetterForgeChatUtilities {
 	}
 	public static String getRawPreferredPlayerName(GameProfile player, boolean enableNickname, boolean enableMetadata) {
 		String name = BetterForgeChat.instance.nicknameProvider != null && enableNickname ? BetterForgeChat.instance.nicknameProvider.getPlayerChatName(player) : player.getName();
+		if(name == null) name = player.getName(); /* No nickname (or null-nickname) provided */
 		String pfx = "", sfx = "";
 		if(enableMetadata && BetterForgeChat.instance.metadataProvider != null) {
 			String[] dat = BetterForgeChat.instance.metadataProvider.getPlayerPrefixAndSuffix(player);
-			pfx = dat[0];
-			sfx = dat[1];
+			if(dat != null) {
+				pfx = dat[0] != null ? dat[0] : "";
+				sfx = dat[1] != null ? dat[1] : "";
+			}
 		}
 		String fmat = playerNameFormat;
-		if(name == null) {
-			BetterForgeChat.LOGGER.info("NicknameProvider (FTB Essentials) returned a null nickname, please post issue on GitHub!");
-			name = player.getName();
-		}
 		if(fmat == null) {
 			BetterForgeChat.LOGGER.warn("Could not get playerNameFormat from configuration file, please post issue on GitHub!");
 			return player.getName();
