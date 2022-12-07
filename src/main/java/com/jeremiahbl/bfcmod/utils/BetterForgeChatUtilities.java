@@ -25,7 +25,15 @@ public class BetterForgeChatUtilities {
 			pfx = dat[0];
 			sfx = dat[1];
 		}
-		return playerNameFormat.replace("$prefix", pfx).replace("$name", name).replace("$suffix", sfx);
+		String fmat = ConfigHandler.config.playerNameFormat.get();
+		if(name == null) {
+			BetterForgeChat.LOGGER.info("NicknameProvider (FTB Essentials) returned a null nickname, please post issue on GitHub!");
+			name = player.getGameProfile().getName();
+		}
+		if(fmat == null) {
+			BetterForgeChat.LOGGER.warn("Could not get playerNameFormat from configuration file, please post issue on GitHub!");
+			return player.getGameProfile().getName();
+		} else return fmat.replace("$prefix", pfx).replace("$name", name).replace("$suffix", sfx);
 	}
 	public static TextComponent getFormattedPlayerName(ServerPlayer player) {
 		return TextFormatter.stringToFormattedText(getRawPreferredPlayerName(player));
