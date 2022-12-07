@@ -17,8 +17,9 @@ If you are building a forge modded server on MC1.18.2 there unfortunately are no
 ![screenshots/ColorsCommand.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/ColorsCommand.png)
 ### Markdown support
 ![screenshots/MarkdownSupport.png](https://github.com/abc123me/BetterForgeChat/raw/main/screenshots/MarkdownSupport.png)
-### Permissions plugin integration
-Works with any Forge Permissions plugin to provide easy permission management, see the permissions [on the WiKi](https://github.com/abc123me/BetterForgeChat/wiki)
+## Miscellaneous features
+ - Works with any Forge Permissions plugin to provide easy permission management, see the permissions [on the WiKi](https://github.com/abc123me/BetterForgeChat/wiki)
+ - Integrated nickname commands (if not using forge essentials)
 
 ### Highly configurable
  - Customizable timestamp formats
@@ -28,21 +29,21 @@ Works with any Forge Permissions plugin to provide easy permission management, s
  - Out-Of-Box integration with LuckPerms and FTBEssentials
 
 ## Installation
-- Get the latest version off [CurseForge](https://www.curseforge.com/minecraft/mc-mods/betterforgechat-with-luckperms-support/files)
-- Add JAR file to serverside `mods/` folder
-- Profit!
+ - Get the latest version off [CurseForge](https://www.curseforge.com/minecraft/mc-mods/betterforgechat-with-luckperms-support/files)
+ - Add JAR file to serverside `mods/` folder
+ - Profit!
 
 ## Disclaimer
-- This mod is very new, and due to differing versions of FTBEssentials it can run into problems.
-- Make sure to use version 1.1.1 and above if using with FTBEssentials
-- Please submit any issues to GitHub
+ - This mod is very new, and due to differing versions of FTBEssentials it can run into problems.
+ - Make sure to use version 1.1.2 and above if using with FTBEssentials
+ - Please submit any issues to GitHub
 
 ## Development
 I used eclipse to make this project, all files included, please feel free to do whatever you want with it
 
 ## Planned features
-- MC1.19.2 Support
-- Ability to use colors on sign permission
-- Configurable scheduled server announcements
-- Potential discord integration
-- Integrated /nick and /whois commands
+ - MC1.19.2 Support
+ - Ability to use colors on sign permission
+ - Configurable scheduled server announcements
+ - Potential discord integration
+ - Integrated /nick and /whois commands
