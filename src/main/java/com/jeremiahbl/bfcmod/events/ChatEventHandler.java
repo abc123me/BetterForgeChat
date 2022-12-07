@@ -18,6 +18,7 @@ import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,15 +41,15 @@ public class ChatEventHandler implements IReloadable {
 		loaded = true;
 	}
 	
-	public TextComponent getEventComponent(Component old) {
+	public Style getEventComponent(Component old) {
 		if(old != null && old instanceof TranslatableComponent) {
 			TranslatableComponent tcmp = (TranslatableComponent) old;
 			Object[] args = tcmp.getArgs();
 			for(Object arg : args)
 				if(arg != null && arg instanceof TextComponent)
-					return (TextComponent) arg;
+					return ((TextComponent) arg).getStyle();
 		}
-		return new TextComponent("");
+		return null;
 	}
 	
 	@SubscribeEvent
@@ -81,7 +82,10 @@ public class ChatEventHandler implements IReloadable {
 		if(markdownEnabled && enableStyle && PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.markdownChatNode))
 			msg = MarkdownFormatter.markdownStringToFormattedString(msg);
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
-		TextComponent eventComp = getEventComponent(e.getComponent());
-		e.setComponent(eventComp.append(beforeMsg.append(msgComp.append(afterMsg))));
+		Style sty = getEventComponent(e.getComponent());
+		TextComponent ecmp = new TextComponent("");
+		if(sty != null && sty.getHoverEvent() != null)
+			ecmp.setStyle(sty);
+		e.setComponent(ecmp.append(beforeMsg.append(msgComp.append(afterMsg))));
     }
 }
