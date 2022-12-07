@@ -8,8 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class FTBNicknameProvider implements INicknameProvider {
 	public FTBNicknameProvider() {
-		// Literally here just to trigger an error! by loading the FTBEssentials class
-		FTBEssentials.MOD_ID.length();
+		// Literally here just to trigger an error! by loading the FTBEPlayerData class
+		FTBEPlayerData.MAP.size();
 	}
 	@Override public String getPlayerNickname(ServerPlayer player) {
 		FTBEPlayerData data = FTBEPlayerData.get(player);

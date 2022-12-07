@@ -98,22 +98,23 @@ public class MarkdownFormatter {
 		if((mask & MARKDOWN_MAGIC_BIT) != 0)  out += TextFormatter.OBFUSCATED_FORMAT;
 		return out;
 	}
-	// Debugging porpoises only
-	/*public static void main(String[] args) {
-		System.out.println(markdownStringToFormattedString("***test**123*"));
-	}
-	private static String maskStr(byte mask) {
-		String out = "";
-		if((mask & MARKDOWN_BOLD_BIT) != 0)   out += "BLD ";
-		else out += "--- ";
-		if((mask & MARKDOWN_ITALIC_BIT) != 0) out += "ITA ";
-		else out += "--- ";
-		if((mask & MARKDOWN_UNLINE_BIT) != 0) out += "ULN ";
-		else out += "--- ";
-		if((mask & MARKDOWN_STRIKE_BIT) != 0) out += "STR ";
-		else out += "--- ";
-		if((mask & MARKDOWN_MAGIC_BIT) != 0)  out += "MAG";
-		else out += "---";
-		return out;
-	}*/
 }
+
+// Debugging porpoises only
+/*public static void main(String[] args) {
+	System.out.println(markdownStringToFormattedString("***test**123*"));
+}
+private static String maskStr(byte mask) {
+	String out = "";
+	if((mask & MARKDOWN_BOLD_BIT) != 0)   out += "BLD ";
+	else out += "--- ";
+	if((mask & MARKDOWN_ITALIC_BIT) != 0) out += "ITA ";
+	else out += "--- ";
+	if((mask & MARKDOWN_UNLINE_BIT) != 0) out += "ULN ";
+	else out += "--- ";
+	if((mask & MARKDOWN_STRIKE_BIT) != 0) out += "STR ";
+	else out += "--- ";
+	if((mask & MARKDOWN_MAGIC_BIT) != 0)  out += "MAG";
+	else out += "---";
+	return out;
+}*/

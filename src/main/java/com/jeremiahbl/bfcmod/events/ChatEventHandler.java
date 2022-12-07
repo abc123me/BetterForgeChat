@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.MarkdownFormatter;
 import com.jeremiahbl.bfcmod.TextFormatter;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
@@ -17,10 +16,8 @@ import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.event.config.ModConfigEvent.Reloading;
 
 @EventBusSubscriber
 public class ChatEventHandler implements IReloadable {

@@ -8,6 +8,12 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 
 public class BetterForgeChatUtilities {
+	private static String playerNameFormat = "";
+	
+	public static void reloadConfig() {
+		playerNameFormat = ConfigHandler.config.playerNameFormat.get();
+	}
+	
 	public static String getRawPreferredPlayerName(ServerPlayer player) {
 		return getRawPreferredPlayerName(player, true, true);
 	}
@@ -19,8 +25,7 @@ public class BetterForgeChatUtilities {
 			pfx = dat[0];
 			sfx = dat[1];
 		}
-		String fmat = ConfigHandler.config.playerNameFormat.get();
-		return fmat.replace("$prefix", pfx).replace("$name", name).replace("$suffix", sfx);
+		return playerNameFormat.replace("$prefix", pfx).replace("$name", name).replace("$suffix", sfx);
 	}
 	public static TextComponent getFormattedPlayerName(ServerPlayer player) {
 		return TextFormatter.stringToFormattedText(getRawPreferredPlayerName(player));

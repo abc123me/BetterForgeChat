@@ -90,7 +90,7 @@ minecraft {
         // This run config launches GameTestServer and runs all registered gametests, then exits.
         // By default, the server will crash when no gametests are provided.
         // The gametest system is also enabled by default for other run configs under the /test command.
-        gameTestServer {
+        /*gameTestServer {
             workingDirectory project.file('run')
 
             // Recommended logging data for a userdev environment
@@ -130,7 +130,7 @@ minecraft {
                     source sourceSets.main
                 }
             }
-        }
+        }*/
     }
 }
 
@@ -142,18 +142,18 @@ repositories {
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    //flatDir {
-     //   dirs 'lib'
-    //}
+    flatDir {
+        dirs 'lib'
+    }
     
-    //mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.51'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.74'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -167,8 +167,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     
-    compileOnly files("lib/luckperms-forge-5.4.26.jar")
-    compileOnly files("lib/ftb-essentials-1802.1.7-build.42.jar")
+    // fg.deobf doesn't work for some bullshit reason
+    //runtimeOnly fg.deobf("ftb-library:ftb-library-forge:1802.3.7")
+    //implementation fg.deobf("ftb-essentials:ftb-essentials:1802.1.7")
+    //runtimeOnly fg.deobf("luckperms:luckperms:5.4.26")
+    compileOnly "luckperms:luckperms-api:5.4"
+    compileOnly "ftb-essentials:ftb-essentials:1802.1.7"
+    implementation "com.discord4j:discord4j-core:3.2.3"
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

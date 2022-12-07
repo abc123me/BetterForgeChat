@@ -1,20 +1,35 @@
 package com.jeremiahbl.bfcmod.events;
 
 import com.jeremiahbl.bfcmod.BetterForgeChat;
+import com.jeremiahbl.bfcmod.commands.NickCommands;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
+import com.jeremiahbl.bfcmod.utils.IntegratedNicknameProvider;
 import com.jeremiahbl.bfcmod.utils.moddeps.FTBNicknameProvider;
 import com.jeremiahbl.bfcmod.utils.moddeps.LuckPermsProvider;
 
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.server.permission.PermissionAPI;
 
 @EventBusSubscriber
 public class ExternalModLoadingEvent {
 	@SubscribeEvent public void onServerStarted(ServerStartedEvent e) {
 		loadLuckPerms();
 		loadFtbEssentials();
+		loadIntegratedNicknameProvider();
+	}
+	private void setupDiscordIntegration() {
+		if(ConfigHandler.config.enableDiscordBotIntegration.get()) {
+			
+		}
+	}
+	private void loadIntegratedNicknameProvider() {
+		if (BetterForgeChat.instance.nicknameProvider == null && 
+				ConfigHandler.config.autoEnableChatNicknameCommand.get()) {
+			BetterForgeChat.instance.nicknameProvider = new IntegratedNicknameProvider();
+			NickCommands.nicknameIntegrationEnabled = true;
+    		BetterForgeChat.LOGGER.info("Integraded nickname management enabled sucessfully!");
+		}
 	}
 	private void loadLuckPerms() {
 		if(!ConfigHandler.config.enableLuckPerms.get()) {

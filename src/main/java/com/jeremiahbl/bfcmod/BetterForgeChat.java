@@ -1,5 +1,6 @@
 package com.jeremiahbl.bfcmod;
 
+import com.jeremiahbl.bfcmod.commands.NickCommands;
 import com.jeremiahbl.bfcmod.config.*;
 import com.jeremiahbl.bfcmod.events.*;
 import com.jeremiahbl.bfcmod.utils.*;
@@ -20,7 +21,7 @@ import org.slf4j.Logger;
 @Mod(BetterForgeChat.MODID)
 public class BetterForgeChat {
 	public static final String MODID = "bfcmod";
-	public static final String VERSION = "V1.1";
+	public static final String VERSION = "V1.2";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static BetterForgeChat instance;
 	
@@ -39,6 +40,10 @@ public class BetterForgeChat {
     	// Register reloadable configuration stuff (reduce some things subscribed to the event bus)
     	configurationHandler.registerReloadable(playerEventHandler);
     	configurationHandler.registerReloadable(chatHandler);
+    	configurationHandler.registerReloadable(() -> {
+    		NickCommands.reloadConfig();
+    		BetterForgeChatUtilities.reloadConfig();
+    	});
     	configurationHandler.registerReloadable(() -> BetterForgeChat.LOGGER.info("Configuration options loaded!"));
     	MinecraftForge.EVENT_BUS.register(configurationHandler);
     	// Get the mod loading context (useful for doing stuff)

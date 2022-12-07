@@ -1,9 +1,11 @@
-package com.jeremiahbl.bfcmod.config;
+package com.jeremiahbl.bfcmod.commands;
 
 import java.util.Arrays;
 
 import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.TextFormatter;
+import com.jeremiahbl.bfcmod.config.ConfigHandler;
+import com.jeremiahbl.bfcmod.config.PermissionsHandler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -14,10 +16,10 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraftforge.server.permission.nodes.PermissionNode;
 
-public class BetterForgeChatCommands {
+public class BfcCommands {
 	private static final Iterable<String> bfcModSubCommands = Arrays.asList(new String[] { "info", "colors" });
 	
-	private static boolean checkPermission(CommandSourceStack c, PermissionNode<Boolean> node) {
+	protected static boolean checkPermission(CommandSourceStack c, PermissionNode<Boolean> node) {
 		try {
 			return PermissionsHandler.playerHasPermission(c.getPlayerOrException(), node);
 		} catch(CommandSyntaxException e) {
@@ -25,25 +27,26 @@ public class BetterForgeChatCommands {
 			return true;
 		}
 	}
-	private static boolean checkContextPermission(CommandContext<CommandSourceStack> c, PermissionNode<Boolean> node) {
+	protected static boolean checkContextPermission(CommandContext<CommandSourceStack> c, PermissionNode<Boolean> node) {
 		return checkPermission(c.getSource(), node);
 	}
-	private static int failNoPermission(CommandContext<CommandSourceStack> ctx) {
+	protected static int failNoPermission(CommandContext<CommandSourceStack> ctx) {
 		ctx.getSource().sendFailure(TextFormatter.stringToFormattedText(TextFormatter.COLOR_RED + "You don't have permission to run this command" + TextFormatter.RESET_ALL_FORMAT));
 		return 0;
 	}
 	
 	public static void register(CommandDispatcher<CommandSourceStack> disp) {
+		disp.register(Commands.literal("bfc").requires((c) -> {
+				return checkPermission(c, PermissionsHandler.bfcModCommand);
+			}).then(Commands.argument("mode", StringArgumentType.greedyString())
+					.suggests((context, builder) -> SharedSuggestionProvider.suggest(bfcModSubCommands, builder))
+					.executes(ctx -> modCommand(ctx))));
 		if(ConfigHandler.config.enableColorsCommand.get()) {
 			disp.register(Commands.literal("colors").requires((c) -> {
 					return checkPermission(c, PermissionsHandler.coloredChatNode);
 				}).executes(ctx -> colorCommand(ctx)));
 		}
-		disp.register(Commands.literal("bfc").requires((c) -> {
-				return checkPermission(c, PermissionsHandler.bfcModCommand);
-			}).then(Commands.argument("mode", StringArgumentType.greedyString())
-			.suggests((context, builder) -> SharedSuggestionProvider.suggest(bfcModSubCommands, builder))
-			.executes(ctx -> modCommand(ctx))));
+		NickCommands.register(disp);
 	}
 	
 	public static int modCommand(CommandContext<CommandSourceStack> ctx) {

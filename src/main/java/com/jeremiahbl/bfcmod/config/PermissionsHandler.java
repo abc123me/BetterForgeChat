@@ -37,6 +37,13 @@ public class PermissionsHandler {
 	public static PermissionNode<Boolean> bfcModCommandInfoSubCommand = 
 			ezyPermission("commands.bfc.info", true, "BetterForgeChat info sub-command", "Enables/Disables the \"/bfc info\" sub-command");
 	
+	public static PermissionNode<Boolean> whoisCommand = 
+			ezyPermission("commands.whois", true, "Nickname", "Enables/Disables the \"/whois <nickname>\" command");
+	public static PermissionNode<Boolean> nickCommand = 
+			ezyPermission("commands.nick", true, "Nickname", "Enables/Disables the \"/nick <nickname>\" command");
+	public static PermissionNode<Boolean> nickOthersCommand = 
+			ezyPermission("commands.nick.others", true, "Modify nicknames", "Enables/Disables the \"/nick <username> <nickname>\" command");
+	
 	@SubscribeEvent public void registerPermissionNodes(Nodes pge) {
 		for(Field fld : PermissionsHandler.class.getDeclaredFields()) {
 			if(fld.getType() == PermissionNode.class) {
