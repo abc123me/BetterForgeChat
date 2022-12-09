@@ -4,6 +4,7 @@ import com.jeremiahbl.bfcmod.commands.NickCommands;
 import com.jeremiahbl.bfcmod.config.*;
 import com.jeremiahbl.bfcmod.events.*;
 import com.jeremiahbl.bfcmod.utils.*;
+import com.jeremiahbl.bfcmod.utils.moddeps.DiscordHandler;
 import com.mojang.logging.LogUtils;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -23,8 +24,10 @@ public class BetterForgeChat {
 	public static final String MODID = "bfcmod";
 	public static final String VERSION = "V1.2";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static BetterForgeChat instance;
-	
+    public static BetterForgeChat instance = null;
+
+    // These all could be null
+    public DiscordHandler discordHandler = null;
     public IMetadataProvider metadataProvider = null;
     public INicknameProvider nicknameProvider = null;
     
@@ -71,4 +74,8 @@ public class BetterForgeChat {
         // Final mod loading completion message
     	LOGGER.info("Mod loaded up and ready to go! (c) Jeremiah Lowe 2022 - 2023!");
     }
+    
+	public void registerReloadable(IReloadable reloadable) {
+		configurationHandler.registerReloadable(reloadable);
+	}
 }

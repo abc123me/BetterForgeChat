@@ -4,10 +4,12 @@ import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.commands.NickCommands;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
 import com.jeremiahbl.bfcmod.utils.IntegratedNicknameProvider;
+import com.jeremiahbl.bfcmod.utils.moddeps.DiscordHandler;
 import com.jeremiahbl.bfcmod.utils.moddeps.FTBNicknameProvider;
 import com.jeremiahbl.bfcmod.utils.moddeps.LuckPermsProvider;
 
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -17,13 +19,19 @@ public class ExternalModLoadingEvent {
 		loadLuckPerms();
 		loadFtbEssentials();
 		loadIntegratedNicknameProvider();
-		//loadDiscordIntegration();
+		loadDiscordIntegration();
 	}
-	/*private void loadDiscordIntegration() {
-		if(ConfigHandler.config.enableDiscordBotIntegration.get()) {
-			
-		}
-	}*/
+	@SubscribeEvent public void onServerStopped(ServerStoppingEvent e) {
+		unloadDiscordIntegration();
+	}
+	private void loadDiscordIntegration() {
+		if(ConfigHandler.config.enableDiscordBotIntegration.get())
+			BetterForgeChat.instance.discordHandler = DiscordHandler.bfcFactory();
+	}
+	private void unloadDiscordIntegration() {
+		if(BetterForgeChat.instance.discordHandler != null)
+			BetterForgeChat.instance.discordHandler.disconnect();
+	}
 	private void loadIntegratedNicknameProvider() {
 		if (BetterForgeChat.instance.nicknameProvider == null && 
 				ConfigHandler.config.autoEnableChatNicknameCommand.get()) {

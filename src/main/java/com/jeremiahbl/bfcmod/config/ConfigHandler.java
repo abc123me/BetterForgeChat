@@ -12,6 +12,7 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.ConfigValue<String> chatMessageFormat;
 		public final ForgeConfigSpec.ConfigValue<String> timestampFormat;
 		public final ForgeConfigSpec.ConfigValue<String> discordBotToken;
+		public final ForgeConfigSpec.ConfigValue<String> discordBotChannelID;
 
 		public final ForgeConfigSpec.ConfigValue<Integer> maximumNicknameLength;
 		public final ForgeConfigSpec.ConfigValue<Integer> minimumNicknameLength;
@@ -48,6 +49,7 @@ public class ConfigHandler {
 							 "    Read more here: https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html")
 					.define("timestampFormat", "HH:mm");
 			discordBotToken = builder.comment("  Discord bot token for discord integration").define("discordBotToken", "");
+			discordBotChannelID = builder.comment("  Numeric discord bot channel ID to send/receive player chat in").define("discordBotChannelID", "0");
 			enableTimestamp = builder.comment("  Enables or disables the filling in of timestamps").define("enableTimestamp", true);
 			enableFtbEssentials = builder.comment("  Enables or disables FTB essentials nickname integration").define("useFtbEssentials", true);
 			enableLuckPerms = builder.comment("  Enables or disables LuckPerms integration").define("useLuckPerms", true);
@@ -62,7 +64,7 @@ public class ConfigHandler {
 			enableChatNicknameCommand = builder.comment(
 					  "  Enables or disables the integrated nickname command"
 					+ "   (If autoIntegratedNicknames is true, this setting is ignored) ").define("enableIntegratedNicknames", false);
-			enableDiscordBotIntegration = builder.comment("  Enables or disables discord integration").define("enableDiscordIntegraation", false);
+			enableDiscordBotIntegration = builder.comment("  Enables or disables discord integration").define("enableDiscordIntegration", false);
 			autoEnableChatNicknameCommand = builder.comment("  When true, enables the integrated nickname-related commands if FTB essentials is not present").define("autoIntegratedNicknames", true);
 			maximumNicknameLength = builder.comment("  Maximum allowed nickname length (for integrated nickname commands)").defineInRange("maximumNicknameLength", 50, 1, 500);
 			minimumNicknameLength = builder.comment("  Minimum allowed nickname length (for integrated nickname commands)").defineInRange("minimumNicknameLength", 1, 1, 500);

@@ -8,7 +8,45 @@ public class MarkdownFormatter {
 	public static final byte MARKDOWN_MAGIC_BIT  = 16;
 	public static final byte MARKDOWN_ALL_FEATURES 
 		= MARKDOWN_BOLD_BIT | MARKDOWN_ITALIC_BIT | MARKDOWN_UNLINE_BIT | MARKDOWN_STRIKE_BIT | MARKDOWN_MAGIC_BIT;
-	
+
+	public static final String formattedStringToMarkdownString(String msg) {
+		if(msg == null) return null;
+		String newMsg = null;
+		boolean nextIsStyle = false;
+		String curStr = "";
+		byte mask = 0;
+		for(int i = 0; i < msg.length(); i++) {
+			char c = msg.charAt(i);
+			if(c == '&') {
+				if(nextIsStyle) {
+					nextIsStyle = false;
+					curStr += "&";
+				} else nextIsStyle = true;
+			} else if(nextIsStyle) {
+				if(TextFormatter.isStyleChar(c)) {
+					switch(c) {
+						case 'l': curStr += "**"; mask |= MARKDOWN_BOLD_BIT; break;
+						case 'n': curStr += "__"; mask |= MARKDOWN_UNLINE_BIT; break;
+						case 'o': curStr += "*";  mask |= MARKDOWN_ITALIC_BIT; break;
+						case 'm': curStr += "~~"; mask |= MARKDOWN_STRIKE_BIT; break;
+						default: 
+							if((mask & MARKDOWN_BOLD_BIT) != 0)   curStr += "**";
+							if((mask & MARKDOWN_ITALIC_BIT) != 0) curStr += "*";
+							if((mask & MARKDOWN_UNLINE_BIT) != 0) curStr += "__";
+							if((mask & MARKDOWN_STRIKE_BIT) != 0) curStr += "~~";
+							break;
+					}
+					newMsg += curStr;
+					curStr = "";
+				} else curStr += ("&" + c);
+				nextIsStyle = false;
+			} else curStr += c;
+		}
+		if(curStr.length() > 0) {
+			newMsg += curStr;
+		}
+		return newMsg;
+	}
 	public static final String markdownStringToFormattedString(String md) {
 		return markdownStringToFormattedString(md, MARKDOWN_ALL_FEATURES);
 	}

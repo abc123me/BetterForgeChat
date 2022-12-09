@@ -4,12 +4,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TextComponent;
 
 public final class TextFormatter {
-	public static final String RESET_ALL_FORMAT = "&r";
-	
-	public static final String BOLD_FORMAT = "&l";
-	public static final String UNDERLINE_FORMAT = "&l";
-	public static final String ITALIC_FORMAT = "&o";
-	public static final String OBFUSCATED_FORMAT = "&k";
+	public static final String RESET_ALL_FORMAT     = "&r";
+	public static final String BOLD_FORMAT          = "&l";
+	public static final String UNDERLINE_FORMAT     = "&n";
+	public static final String ITALIC_FORMAT        = "&o";
+	public static final String OBFUSCATED_FORMAT    = "&k";
 	public static final String STRIKETHROUGH_FORMAT = "&m";
 	
 	public static final String COLOR_BLACK =        "&0";
@@ -47,7 +46,7 @@ public final class TextFormatter {
 					curStr += "&";
 				} else nextIsStyle = true;
 			} else if(nextIsStyle) {
-				if(isColorOrStyle(c)) {
+				if(isColorOrStyleChar(c)) {
 					TextComponent tmp = new TextComponent(curStr);
 					tmp.withStyle(curStyle);
 					tmp.withStyle(curColor);
@@ -79,7 +78,7 @@ public final class TextFormatter {
 					curStr += "&";
 				} else nextIsStyle = true;
 			} else if(nextIsStyle) {
-				if(isColorOrStyle(c)) {
+				if(isColorOrStyleChar(c)) {
 					newMsg += curStr;
 					curStr = "";
 				} else curStr += ("&" + c);
@@ -110,8 +109,14 @@ public final class TextFormatter {
 			   "&fDark:   &4&&4 &6&&6 &1&&1 &2&&2 &3&&3 &5&&5 &0&&0 &8&&8\n" + 
 			   "&fStyles: &l&&l&r &n&&n&r &o&&o&r &m&&m&r &k&&k&r\n";
 	}
-	private static final boolean isColorOrStyle(char c) {
+	public static final boolean isColorOrStyleChar(char c) {
 		return getColor(c, null) != null || getStyle(c, null) != null;
+	}
+	public static final boolean isColorChar(char c) {
+		return getColor(c, null) != null;
+	}
+	public static final boolean isStyleChar(char c) {
+		return getStyle(c, null) != null;
 	}
     private static final ChatFormatting getColor(char c, ChatFormatting cur) {
     	switch(c) {
