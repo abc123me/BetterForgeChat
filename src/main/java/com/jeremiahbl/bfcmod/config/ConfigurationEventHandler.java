@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.event.config.ModConfigEvent.Loading;
 import net.minecraftforge.fml.event.config.ModConfigEvent.Reloading;
 
 @EventBusSubscriber
