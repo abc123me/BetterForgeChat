@@ -5,3 +5,5 @@
 /bin/*
 *.launch
 /wiki
+secret
+/logs
