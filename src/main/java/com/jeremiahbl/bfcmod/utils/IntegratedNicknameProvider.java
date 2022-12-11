@@ -9,4 +9,7 @@ public class IntegratedNicknameProvider implements INicknameProvider {
 	@Override public String getPlayerNickname(@NonNull GameProfile player) {
 		return PlayerData.getNickname(player.getId());
 	}
+	@Override public @NonNull String getProviderName() {
+		return "BetterForgeChat";
+	}
 }

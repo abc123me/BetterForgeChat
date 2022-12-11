@@ -47,23 +47,17 @@ public final class TextFormatter {
 					curStr += "&";
 				} else nextIsStyle = true;
 			} else if(nextIsStyle) {
-				boolean makeNewComponent = false;
-				if(isStyle(c)) {
-					curStyle |= BitwiseStyling.getStyleBit(c);
-					makeNewComponent = c == 'r';
-				} else if(isColor(c)) {
-					makeNewComponent = true;
-				} else curStr += ("&" + c);
-				if(makeNewComponent) {
-					TextComponent tmp = BitwiseStyling.makeEncapsulatingTextComponent(curStr, enableStyles ? curStyle : 0);
-					tmp.withStyle(curColor);
-					newMsg.append(tmp);
-					if(enableColors)
-						curColor = getColor(c, curColor);
-					curStr = "";
-					if(makeNewComponent && c == 'r')
-						curStyle = 0;
-				}
+				TextComponent tmp = BitwiseStyling.makeEncapsulatingTextComponent(curStr, enableStyles ? curStyle : 0);
+				tmp.withStyle(curColor);
+				newMsg.append(tmp);
+				if(enableColors)
+					curColor = getColor(c, curColor);
+				curStr = "";
+
+				if(c == 'r') {
+					curColor = ChatFormatting.WHITE;
+					curStyle = 0;
+				} else curStyle |= BitwiseStyling.getStyleBit(c);
 				nextIsStyle = false;
 			} else curStr += c;
 		}

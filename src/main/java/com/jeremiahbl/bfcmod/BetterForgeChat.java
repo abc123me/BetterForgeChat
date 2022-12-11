@@ -20,8 +20,10 @@ import org.slf4j.Logger;
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(BetterForgeChat.MODID)
 public class BetterForgeChat {
+	public static final String CHAT_ID_STR = 
+			"&cBetter &9&lForge &eChat&r &d(c) Jeremiah Lowe 2022-2023&r\n";
 	public static final String MODID = "bfcmod";
-	public static final String VERSION = "V1.2";
+	public static final String VERSION = "V1.2.1";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static BetterForgeChat instance;
 	

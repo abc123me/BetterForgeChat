@@ -1,5 +1,7 @@
 package com.jeremiahbl.bfcmod.utils.moddeps;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.jeremiahbl.bfcmod.utils.IMetadataProvider;
 import com.mojang.authlib.GameProfile;
 
@@ -29,5 +31,8 @@ public class LuckPermsProvider implements IMetadataProvider {
 		} catch(IllegalStateException ise) {
 			return null;
 		}
+	}
+	@Override public @NonNull String getProviderName() {
+		return "LuckPerms";
 	}
 }
