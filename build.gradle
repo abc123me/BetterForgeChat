@@ -173,7 +173,7 @@ dependencies {
     //runtimeOnly fg.deobf("luckperms:luckperms:5.4.26")
     compileOnly "luckperms:luckperms-api:5.4"
     compileOnly "ftb-essentials:ftb-essentials:1802.1.7"
-    //implementation "com.discord4j:discord4j-core:3.2.3"
+    implementation "com.discord4j:discord4j-core:3.2.3"
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
