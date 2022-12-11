@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.MarkdownFormatter;
 import com.jeremiahbl.bfcmod.TextFormatter;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
@@ -15,9 +14,7 @@ import com.mojang.authlib.GameProfile;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -94,6 +91,6 @@ public class ChatEventHandler implements IReloadable {
 		TextComponent ecmp = new TextComponent("");
 		if(sty != null && sty.getHoverEvent() != null)
 			ecmp.setStyle(sty);
-		e.setComponent(ecmp.append(beforeMsg.append(msgComp.append(afterMsg))));
+		e.setComponent(beforeMsg.append(msgComp.append(afterMsg)));
     }
 }
