@@ -62,13 +62,13 @@ public class BfcCommands {
 				boolean hasMetaProv = BetterForgeChat.instance.metadataProvider != null;
 				boolean hasNickProv = BetterForgeChat.instance.nicknameProvider != null;
 				String metaProvName = hasMetaProv ? BetterForgeChat.instance.metadataProvider.getProviderName() : "";
-				String nickProvName = hasNickProv ? BetterForgeChat.instance.metadataProvider.getProviderName() : "";
-				if(hasMetaProv) metaProvName = "(via " + metaProvName + ")";
-				if(hasNickProv) nickProvName = "(via " + nickProvName + ")";
+				String nickProvName = hasNickProv ? BetterForgeChat.instance.nicknameProvider.getProviderName() : "";
+				if(hasMetaProv) metaProvName = " (via " + metaProvName + ")";
+				if(hasNickProv) nickProvName = " (via " + nickProvName + ")";
 				ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText(
-						BetterForgeChat.CHAT_ID_STR + "&e" + BetterForgeChat.MODID + " " + BetterForgeChat.VERSION + "&r\n"
-								+ (hasMetaProv ? "&a&lWITH" : "&c&lWITHOUT") + "&r&e metadata integration" + metaProvName + "&r\n"
-								+ (hasNickProv ? "&a&lWITH" : "&c&lWITHOUT") + "&r&e nickname integration" + nickProvName + "&r\n"), false);
+						BetterForgeChat.CHAT_ID_STR + "\n&eMod ID: &d" + BetterForgeChat.MODID + "    &r&eMod version: &d" + BetterForgeChat.VERSION + " (forge)&r\n\n"
+						+ (hasMetaProv ? "&a&lWITH" : "&c&lWITHOUT") + "&r&e metadata integration" + metaProvName + "&r\n"
+						+ (hasNickProv ? "&a&lWITH" : "&c&lWITHOUT") + "&r&e nickname integration" + nickProvName + "&r\n"), false);
 				return 1;
 			} else return failNoPermission(ctx);
 		} else if(arg.contentEquals("test")) {
