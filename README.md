@@ -20,6 +20,7 @@ If you are building a forge modded server on MC1.18.2 there unfortunately are no
 ## Miscellaneous features
  - Works with any Forge Permissions plugin to provide easy permission management, see the permissions [on the WiKi](https://github.com/abc123me/BetterForgeChat/wiki)
  - Integrated nickname commands (if not using forge essentials)
+ - Discord integration (See version 1.3 prerelease)
 
 ### Highly configurable
  - Customizable timestamp formats
@@ -45,5 +46,5 @@ I used eclipse to make this project, all files included, please feel free to do 
  - MC1.19.2 Support
  - Ability to use colors on sign permission
  - Configurable scheduled server announcements
- - Potential discord integration
+ - Potential discord integration (coming in version 1.3, prerelease available)
  - Integrated /nick and /whois commands
