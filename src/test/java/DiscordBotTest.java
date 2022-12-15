@@ -24,7 +24,8 @@ public class DiscordBotTest {
 		
 		client.getEventDispatcher().on(ReadyEvent.class).subscribe(event -> {
 			System.out.println("ReadyEvent");
-			client.rest().getChannelById(Snowflake.of((String) props.get("channel"))).createMessage("**mwhahaha i've entered the matrix**").subscribe();
+			client.rest().getChannelById(Snowflake.of((String) props.get("channel")))
+				.createMessage("**mwhahaha i've entered the matrix**").subscribe();
 		});
 		client.getEventDispatcher().on(MessageCreateEvent.class).subscribe(event -> {
 			System.out.println("MessageCreateEvent");

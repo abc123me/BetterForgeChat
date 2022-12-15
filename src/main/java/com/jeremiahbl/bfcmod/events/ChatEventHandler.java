@@ -11,26 +11,33 @@ import com.jeremiahbl.bfcmod.config.ConfigHandler;
 import com.jeremiahbl.bfcmod.config.IReloadable;
 import com.jeremiahbl.bfcmod.config.PermissionsHandler;
 import com.jeremiahbl.bfcmod.utils.BetterForgeChatUtilities;
+import com.jeremiahbl.bfcmod.utils.IDiscordListener;
 import com.mojang.authlib.GameProfile;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 @EventBusSubscriber
-public class ChatEventHandler implements IReloadable {
+public class ChatEventHandler implements IReloadable, IDiscordListener {
 	private SimpleDateFormat timestampFormat = null;
 	private boolean markdownEnabled = false;
 	private String chatMessageFormat = "";
 	private boolean loaded = false;
+	private UUID serverUUID = UUID.randomUUID();
 	
 	public void reloadConfigOptions() {
 		loaded = false;
-		timestampFormat = ConfigHandler.config.enableTimestamp.get().booleanValue() ? new SimpleDateFormat(ConfigHandler.config.timestampFormat.get()) : null;
-		markdownEnabled = ConfigHandler.config.enableMarkdown.get().booleanValue();
+		timestampFormat = ConfigHandler.config.enableTimestamp.get() ? new SimpleDateFormat(ConfigHandler.config.timestampFormat.get()) : null;
+		markdownEnabled = ConfigHandler.config.enableMarkdown.get();
 		chatMessageFormat = ConfigHandler.config.chatMessageFormat.get();
 		loaded = true;
 	}
@@ -83,8 +90,9 @@ public class ChatEventHandler implements IReloadable {
 		// Convert markdown to normal essentials formatting
 		if(markdownEnabled && enableStyle && PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.markdownChatNode))
 			msg = MarkdownFormatter.markdownStringToFormattedString(msg);
+		// Send via discord
 		if(BetterForgeChat.instance.discordHandler != null)
-			BetterForgeChat.instance.discordHandler.sendMessage(beforeMsgText + msg + afterMsgText);
+			BetterForgeChat.instance.discordHandler.sendChatMessage(profile, name, msg);
 		// Start generating the main TextComponent
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
 		// Append the hover and click event crap
@@ -94,4 +102,33 @@ public class ChatEventHandler implements IReloadable {
 			ecmp.setStyle(sty);
 		e.setComponent(ecmp.append(beforeMsg.append(msgComp.append(afterMsg))));
     }
+
+	@SuppressWarnings("resource")
+	@Override public void onDiscordMessageReceived(String msg, String username) {
+		MinecraftServer serv = ServerLifecycleHooks.getCurrentServer();
+		String tstamp = timestampFormat == null ? "" : timestampFormat.format(new Date());
+		String fmsg = chatMessageFormat.replace("$time", tstamp).replace("$name", "[&dDiscord&r] " + username).replace("$msg", msg);
+		serv.getPlayerList().broadcastMessage(TextFormatter.stringToFormattedText(fmsg), ChatType.CHAT, serverUUID);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerJoin(PlayerLoggedInEvent ple) {
+		GameProfile profile = ple.getPlayer().getGameProfile();
+		String name = BetterForgeChatUtilities.getRawPreferredPlayerName(profile);
+		if(BetterForgeChat.instance.discordHandler != null)
+			BetterForgeChat.instance.discordHandler.sendPlayerMessage(profile, TextFormatter.removeTextFormatting(name), false);
+	}
+	@SubscribeEvent
+	public void onPlayerLeave(PlayerLoggedOutEvent ple) {
+		GameProfile profile = ple.getPlayer().getGameProfile();
+		String name = BetterForgeChatUtilities.getRawPreferredPlayerName(profile);
+		if(BetterForgeChat.instance.discordHandler != null)
+			BetterForgeChat.instance.discordHandler.sendPlayerMessage(profile, TextFormatter.removeTextFormatting(name), true);
+	}
+	@SubscribeEvent
+	public void onPlayerDeath(LivingDeathEvent lde) {
+		if(lde.getEntity() instanceof ServerPlayer) {
+			//TODO: Not yet implemented
+		}
+	}
 }

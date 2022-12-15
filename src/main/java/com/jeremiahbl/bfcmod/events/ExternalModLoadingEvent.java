@@ -25,12 +25,19 @@ public class ExternalModLoadingEvent {
 		unloadDiscordIntegration();
 	}
 	private void loadDiscordIntegration() {
-		if(ConfigHandler.config.enableDiscordBotIntegration.get())
-			BetterForgeChat.instance.discordHandler = DiscordHandler.bfcFactory();
+		try {
+			if(ConfigHandler.config.enableDiscordBotIntegration.get()) {
+				BetterForgeChat.instance.discordHandler = DiscordHandler.bfcFactory();
+				BetterForgeChat.instance.registerDiscordChatHandler();
+			} else BetterForgeChat.LOGGER.info("Discord API was disabled, we won't use it!");
+		} catch(Error e2) { // Could have a NoClassDefFoundError here!
+			BetterForgeChat.instance.discordHandler = null;
+		   	BetterForgeChat.LOGGER.warn("WARNING - Discord API wasn't found, we won't use it!");
+		}
 	}
 	private void unloadDiscordIntegration() {
 		if(BetterForgeChat.instance.discordHandler != null)
-			BetterForgeChat.instance.discordHandler.disconnect();
+			BetterForgeChat.instance.discordHandler.disconnectAPI();
 	}
 	private void loadIntegratedNicknameProvider() {
 		if (BetterForgeChat.instance.nicknameProvider == null && 

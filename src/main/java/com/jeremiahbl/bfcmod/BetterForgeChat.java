@@ -78,4 +78,11 @@ public class BetterForgeChat {
 	public void registerReloadable(IReloadable reloadable) {
 		configurationHandler.registerReloadable(reloadable);
 	}
+	public void reloadReloadables() {
+		configurationHandler.reloadConfigOptions();
+	}
+	public void registerDiscordChatHandler() {
+		if(discordHandler != null)
+			discordHandler.registerDiscordListener(chatHandler);
+	}
 }

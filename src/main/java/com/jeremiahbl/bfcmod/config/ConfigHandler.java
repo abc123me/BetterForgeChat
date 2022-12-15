@@ -11,8 +11,6 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.ConfigValue<String> playerNameFormat;
 		public final ForgeConfigSpec.ConfigValue<String> chatMessageFormat;
 		public final ForgeConfigSpec.ConfigValue<String> timestampFormat;
-		public final ForgeConfigSpec.ConfigValue<String> discordBotToken;
-		public final ForgeConfigSpec.ConfigValue<String> discordBotChannelID;
 
 		public final ForgeConfigSpec.ConfigValue<Integer> maximumNicknameLength;
 		public final ForgeConfigSpec.ConfigValue<Integer> minimumNicknameLength;
@@ -29,6 +27,19 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableChatNicknameCommand;
 		public final ForgeConfigSpec.ConfigValue<Boolean> autoEnableChatNicknameCommand;
 		public final ForgeConfigSpec.ConfigValue<Boolean> enableDiscordBotIntegration;
+
+		public final ForgeConfigSpec.ConfigValue<String> discordBotToken;
+		public final ForgeConfigSpec.ConfigValue<String> discordBotChannelID;
+		public final ForgeConfigSpec.ConfigValue<String> discordServerStartMessage;
+		public final ForgeConfigSpec.ConfigValue<String> discordServerStopMessage;
+		public final ForgeConfigSpec.ConfigValue<String> discordPlayerJoinMessage;
+		public final ForgeConfigSpec.ConfigValue<String> discordPlayerLeftMessage;
+		public final ForgeConfigSpec.ConfigValue<String> discordPlayerChatMessage;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableDiscordServerMessages;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableDiscordPlayerMessages;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableDiscordDeathMessages;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableDiscordNicknames;
+		public final ForgeConfigSpec.ConfigValue<Boolean> enableDiscordMentions;
 		
 		public ConfigBuilder(ForgeConfigSpec.Builder builder) {
 			builder.push("BetterForgeChatModConfig");
@@ -48,8 +59,6 @@ public class ConfigHandler {
 					.comment("  Timestamp format following the java SimpleDateFormat",
 							 "    Read more here: https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html")
 					.define("timestampFormat", "HH:mm");
-			discordBotToken = builder.comment("  Discord bot token for discord integration").define("discordBotToken", "");
-			discordBotChannelID = builder.comment("  Numeric discord bot channel ID to send/receive player chat in").define("discordBotChannelID", "0");
 			enableTimestamp = builder.comment("  Enables or disables the filling in of timestamps").define("enableTimestamp", true);
 			enableFtbEssentials = builder.comment("  Enables or disables FTB essentials nickname integration").define("useFtbEssentials", true);
 			enableLuckPerms = builder.comment("  Enables or disables LuckPerms integration").define("useLuckPerms", true);
@@ -64,10 +73,25 @@ public class ConfigHandler {
 			enableChatNicknameCommand = builder.comment(
 					  "  Enables or disables the integrated nickname command"
 					+ "   (If autoIntegratedNicknames is true, this setting is ignored) ").define("enableIntegratedNicknames", false);
-			enableDiscordBotIntegration = builder.comment("  Enables or disables discord integration").define("enableDiscordIntegration", false);
 			autoEnableChatNicknameCommand = builder.comment("  When true, enables the integrated nickname-related commands if FTB essentials is not present").define("autoIntegratedNicknames", true);
 			maximumNicknameLength = builder.comment("  Maximum allowed nickname length (for integrated nickname commands)").defineInRange("maximumNicknameLength", 50, 1, 500);
 			minimumNicknameLength = builder.comment("  Minimum allowed nickname length (for integrated nickname commands)").defineInRange("minimumNicknameLength", 1, 1, 500);
+			enableDiscordBotIntegration = builder.comment("  Enables or disables discord integration").define("enableDiscordIntegration", false);
+			builder.pop();
+			
+			builder.push("BetterForgeChatDiscordConfig");
+			discordBotToken = builder.comment("  Discord bot token for discord integration").define("token", "");
+			discordBotChannelID = builder.comment("  Numeric discord bot channel ID to send/receive player chat in").define("channelID", "0");
+			enableDiscordDeathMessages = builder.comment("  When true, player death messages in discord (player tried to swim in lava)").define("deathMessages", true);
+			enableDiscordPlayerMessages = builder.comment("  When true, player state messages in discord (player left/joined game)").define("playerMessages", true);
+			enableDiscordServerMessages = builder.comment("  When true, server related messages appear in discord (server starting/stopping)").define("serverMessages", true);
+			enableDiscordNicknames = builder.comment("  When true, in-game nicknames are shown in discord").define("nicknames", true);
+			enableDiscordMentions = builder.comment("  Enables or disables the usage of discord mentions in in-game chat").define("mentions", false);
+			discordServerStartMessage = builder.comment("  Message shown in discord when server starts").define("serverStartMsg", "***BetterForgeChatServer started!***");
+			discordServerStopMessage = builder.comment("  Message shown in discord when server stops").define("serverStopMsg", "***BetterForgeChatServer stopped!***");
+			discordPlayerLeftMessage = builder.comment("  Message shown when a player leaves, $user is username, $name is preferred name").define("playerLeftFormat", "***$name (aka. $user) left the game!***");
+			discordPlayerJoinMessage = builder.comment("  Message shown when a player joins, $user is username, $name is preferred name").define("playerJoinFormat", "***$name (aka. $user) joined the game!***");
+			discordPlayerChatMessage = builder.comment("  Message shown when a player uses in-game chat, $user is username, $name is preferred name, $msg is the chat message").define("chatFormat", "**[Ingame chat] $name (aka. $user)**: $msg");
 			builder.pop();
 		}
 	}

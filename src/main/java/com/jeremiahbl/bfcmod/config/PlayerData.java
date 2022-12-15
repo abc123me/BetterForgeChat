@@ -11,24 +11,33 @@ public class PlayerData {
 	
 	public final UUID uuid;
 	public String nickname = null;
+	public Long discordID = null;
 	
-	public PlayerData(UUID uuid) {
+	private PlayerData(UUID uuid) {
 		this.uuid = uuid;
 	}
 	
+	public boolean hasDiscord() { return discordID != null; }
+	public boolean hasNickname() { return nickname != null; }
+	public void setNickname(String nickname) { this.nickname = nickname; }
+	public String getNickname() { return nickname; }
+	
+	public static PlayerData lookupOrCreatePlayerdata(UUID id) {
+		PlayerData dat = map.get(id);
+		if(dat == null) {
+			dat = new PlayerData(id);
+			dat.nickname = null;
+			dat.discordID = null;
+			map.put(id, dat);
+		}
+		return dat;
+	}
 	public static void setNickname(UUID uuid, String nickName) {
-		PlayerData dat = map.get(uuid);
-		if(dat == null)
-			dat = new PlayerData(uuid);
-		dat.nickname = nickName;
-		map.put(uuid, dat);
+		lookupOrCreatePlayerdata(uuid).setNickname(nickName);
 	}
 	public static String getNickname(UUID id) {
 		PlayerData dat = map.get(id);
 		return dat == null ? null : dat.nickname;
-	}
-	public static UUID whoIs(String nickName) {
-		return null;
 	}
 	
 	@Override public String toString() {

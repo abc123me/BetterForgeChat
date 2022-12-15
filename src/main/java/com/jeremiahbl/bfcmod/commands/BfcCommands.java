@@ -17,7 +17,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraftforge.server.permission.nodes.PermissionNode;
 
 public class BfcCommands {
-	private static final Iterable<String> bfcModSubCommands = Arrays.asList(new String[] { "info", "colors" });
+	private static final Iterable<String> bfcModSubCommands = Arrays.asList(new String[] { "info", "colors", "reload" });
 	
 	protected static boolean checkPermission(CommandSourceStack c, PermissionNode<Boolean> node) {
 		try {
@@ -60,6 +60,14 @@ public class BfcCommands {
 				ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText(
 						"Forge+LitePerms Chat Mod (c) Jeremiah Lowe 2022-2023\n"
 						+ BetterForgeChat.MODID + " " + BetterForgeChat.VERSION), false);
+				return 1;
+			} else return failNoPermission(ctx);
+		} else if(arg.contentEquals("reload")) {
+			if(checkContextPermission(ctx, PermissionsHandler.bfcModCommandInfoSubCommand)) {
+				ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText(
+						"Forge+LitePerms Chat Mod (c) Jeremiah Lowe 2022-2023\n"
+						+ "Reload method ran"), false);
+				
 				return 1;
 			} else return failNoPermission(ctx);
 		} else return 0;

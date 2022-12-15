@@ -11,7 +11,7 @@ public class MarkdownFormatter {
 
 	public static final String formattedStringToMarkdownString(String msg) {
 		if(msg == null) return null;
-		String newMsg = null;
+		String newMsg = "";
 		boolean nextIsStyle = false;
 		String curStr = "";
 		byte mask = 0;
@@ -38,7 +38,8 @@ public class MarkdownFormatter {
 					}
 					newMsg += curStr;
 					curStr = "";
-				} else curStr += ("&" + c);
+				} else if(!TextFormatter.isColorOrStyleChar(c))
+					curStr += ("&" + c);
 				nextIsStyle = false;
 			} else curStr += c;
 		}
