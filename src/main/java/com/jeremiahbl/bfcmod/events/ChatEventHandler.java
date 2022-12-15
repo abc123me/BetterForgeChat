@@ -15,8 +15,12 @@ import com.jeremiahbl.bfcmod.utils.IDiscordListener;
 import com.mojang.authlib.GameProfile;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.*;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -69,10 +73,8 @@ public class ChatEventHandler implements IReloadable, IDiscordListener {
     	String tstamp = timestampFormat == null ? "" : timestampFormat.format(new Date());
 		String name = BetterForgeChatUtilities.getRawPreferredPlayerName(profile);
 		String fmat = chatMessageFormat.replace("$time", tstamp).replace("$name", name);
-		String beforeMsgText = fmat.substring(0, fmat.indexOf("$msg"));
-		String afterMsgText = fmat.substring(fmat.indexOf("$msg") + 4, fmat.length());
-		TextComponent beforeMsg = TextFormatter.stringToFormattedText(beforeMsgText);
-		TextComponent afterMsg = TextFormatter.stringToFormattedText(afterMsgText);
+		TextComponent beforeMsg = TextFormatter.stringToFormattedText(fmat.substring(0, fmat.indexOf("$msg")));
+		TextComponent afterMsg = TextFormatter.stringToFormattedText(fmat.substring(fmat.indexOf("$msg") + 4, fmat.length()));
 		boolean enableColor = PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.coloredChatNode);
 		boolean enableStyle = PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.styledChatNode);
 		// Create an error message if the plyer isn't allowed to use styles/colors
@@ -100,7 +102,7 @@ public class ChatEventHandler implements IReloadable, IDiscordListener {
 		TextComponent ecmp = new TextComponent("");
 		if(sty != null && sty.getHoverEvent() != null)
 			ecmp.setStyle(sty);
-		e.setComponent(ecmp.append(beforeMsg.append(msgComp.append(afterMsg))));
+		e.setComponent(beforeMsg.append(msgComp.append(afterMsg)));
     }
 
 	@SuppressWarnings("resource")

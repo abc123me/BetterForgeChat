@@ -1,55 +1,8 @@
 package com.jeremiahbl.bfcmod;
 
 public class MarkdownFormatter {
-	public static final byte MARKDOWN_BOLD_BIT   = 1;
-	public static final byte MARKDOWN_ITALIC_BIT = 2;
-	public static final byte MARKDOWN_UNLINE_BIT = 4;
-	public static final byte MARKDOWN_STRIKE_BIT = 8;
-	public static final byte MARKDOWN_MAGIC_BIT  = 16;
-	public static final byte MARKDOWN_ALL_FEATURES 
-		= MARKDOWN_BOLD_BIT | MARKDOWN_ITALIC_BIT | MARKDOWN_UNLINE_BIT | MARKDOWN_STRIKE_BIT | MARKDOWN_MAGIC_BIT;
-
-	public static final String formattedStringToMarkdownString(String msg) {
-		if(msg == null) return null;
-		String newMsg = "";
-		boolean nextIsStyle = false;
-		String curStr = "";
-		byte mask = 0;
-		for(int i = 0; i < msg.length(); i++) {
-			char c = msg.charAt(i);
-			if(c == '&') {
-				if(nextIsStyle) {
-					nextIsStyle = false;
-					curStr += "&";
-				} else nextIsStyle = true;
-			} else if(nextIsStyle) {
-				if(TextFormatter.isStyleChar(c)) {
-					switch(c) {
-						case 'l': curStr += "**"; mask |= MARKDOWN_BOLD_BIT; break;
-						case 'n': curStr += "__"; mask |= MARKDOWN_UNLINE_BIT; break;
-						case 'o': curStr += "*";  mask |= MARKDOWN_ITALIC_BIT; break;
-						case 'm': curStr += "~~"; mask |= MARKDOWN_STRIKE_BIT; break;
-						default: 
-							if((mask & MARKDOWN_BOLD_BIT) != 0)   curStr += "**";
-							if((mask & MARKDOWN_ITALIC_BIT) != 0) curStr += "*";
-							if((mask & MARKDOWN_UNLINE_BIT) != 0) curStr += "__";
-							if((mask & MARKDOWN_STRIKE_BIT) != 0) curStr += "~~";
-							break;
-					}
-					newMsg += curStr;
-					curStr = "";
-				} else if(!TextFormatter.isColorOrStyleChar(c))
-					curStr += ("&" + c);
-				nextIsStyle = false;
-			} else curStr += c;
-		}
-		if(curStr.length() > 0) {
-			newMsg += curStr;
-		}
-		return newMsg;
-	}
 	public static final String markdownStringToFormattedString(String md) {
-		return markdownStringToFormattedString(md, MARKDOWN_ALL_FEATURES);
+		return markdownStringToFormattedString(md, BitwiseStyling.ALL_STYLES);
 	}
 	public static final String markdownStringToFormattedString(String md, byte allowedMask) {
 		String newStr = "";
@@ -87,21 +40,21 @@ public class MarkdownFormatter {
 				newStr += c;
 			}
 		}
-		return newStr + TextFormatter.RESET_ALL_FORMAT;
+		return newStr.trim();
 	}
 	private static byte convertMD(byte mask, char[] chrs, int len) {
 		char c1 = len > 0 ? chrs[0] : ' ';
 		char c2 = len > 1 ? chrs[1] : ' ';
 		if((c1 == '*' && c2 == ' ') || (c1 == '_' && c2 == ' '))
-			return bitToggle(mask, MARKDOWN_ITALIC_BIT);
+			return bitToggle(mask, BitwiseStyling.ITALIC_BIT);
 		else if((c1 == '~' && c2 == ' '))
-			return bitToggle(mask, MARKDOWN_MAGIC_BIT);
+			return bitToggle(mask, BitwiseStyling.OBFUSCATED_BIT);
 		else if((c1 == '*' && c2 == '*'))
-			return bitToggle(mask, MARKDOWN_BOLD_BIT);
+			return bitToggle(mask, BitwiseStyling.BOLD_BIT);
 		else if((c1 == '~' && c2 == '~'))
-			return bitToggle(mask, MARKDOWN_STRIKE_BIT);
+			return bitToggle(mask, BitwiseStyling.STRIKETHROUGH_BIT);
 		else if((c1 == '_' && c2 == '_'))
-			return bitToggle(mask, MARKDOWN_UNLINE_BIT);
+			return bitToggle(mask, BitwiseStyling.UNDERLINE_BIT);
 		else return mask;
 	}
 	private static String maskDiff(byte newMask, byte oldMask, byte allowedMask) {
@@ -110,9 +63,9 @@ public class MarkdownFormatter {
 		byte stylesNew = bitCount(newMask);
 		byte stylesOld = bitCount(oldMask);
 		if(stylesNew > stylesOld) // Styles were added
-			return styleString((byte) (newMask & (~oldMask) & allowedMask));
+			return BitwiseStyling.styleString((byte) (newMask & (~oldMask) & allowedMask));
 		else if(stylesNew < stylesOld) { // Styles were removed
-			return TextFormatter.RESET_ALL_FORMAT + styleString((byte)(newMask & allowedMask));
+			return TextFormatter.RESET_ALL_FORMAT + BitwiseStyling.styleString((byte)(newMask & allowedMask));
 		} else { // Styles shifted
 			return "MARKDOWN FORMATTER INVALID STATE - REPORT TO DEVELOPER";
 		}
@@ -127,15 +80,6 @@ public class MarkdownFormatter {
 		if((mask & bit) != 0) mask &= ~bit;
 		else mask |= bit;
 		return mask;
-	}
-	private static String styleString(byte mask) {
-		String out = "";
-		if((mask & MARKDOWN_BOLD_BIT) != 0)   out += TextFormatter.BOLD_FORMAT;
-		if((mask & MARKDOWN_ITALIC_BIT) != 0) out += TextFormatter.ITALIC_FORMAT;
-		if((mask & MARKDOWN_UNLINE_BIT) != 0) out += TextFormatter.UNDERLINE_FORMAT;
-		if((mask & MARKDOWN_STRIKE_BIT) != 0) out += TextFormatter.STRIKETHROUGH_FORMAT;
-		if((mask & MARKDOWN_MAGIC_BIT) != 0)  out += TextFormatter.OBFUSCATED_FORMAT;
-		return out;
 	}
 }
 

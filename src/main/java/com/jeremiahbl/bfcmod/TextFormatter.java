@@ -4,7 +4,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TextComponent;
 
 public final class TextFormatter {
-	public static final String RESET_ALL_FORMAT     = "&r";
+	public static final String RESET_ALL_FORMAT = "&r";
+	
 	public static final String BOLD_FORMAT          = "&l";
 	public static final String UNDERLINE_FORMAT     = "&n";
 	public static final String ITALIC_FORMAT        = "&o";
@@ -37,7 +38,7 @@ public final class TextFormatter {
 		boolean nextIsStyle = false;
 		String curStr = "";
 		ChatFormatting curColor = ChatFormatting.WHITE;
-		ChatFormatting curStyle = ChatFormatting.RESET;
+		byte curStyle = 0;
 		for(int i = 0; i < msg.length(); i++) {
 			char c = msg.charAt(i);
 			if(c == '&') {
@@ -46,21 +47,22 @@ public final class TextFormatter {
 					curStr += "&";
 				} else nextIsStyle = true;
 			} else if(nextIsStyle) {
-				if(isColorOrStyleChar(c)) {
-					TextComponent tmp = new TextComponent(curStr);
-					tmp.withStyle(curStyle);
-					tmp.withStyle(curColor);
-					newMsg.append(tmp);
-					if(enableColors) curColor = getColor(c, curColor);
-					if(enableStyles) curStyle = getStyle(c, curStyle);
-					curStr = "";
-				} else curStr += ("&" + c);
+				TextComponent tmp = BitwiseStyling.makeEncapsulatingTextComponent(curStr, enableStyles ? curStyle : 0);
+				tmp.withStyle(curColor);
+				newMsg.append(tmp);
+				if(enableColors)
+					curColor = getColor(c, curColor);
+				curStr = "";
+
+				if(c == 'r') {
+					curColor = ChatFormatting.WHITE;
+					curStyle = 0;
+				} else curStyle |= BitwiseStyling.getStyleBit(c);
 				nextIsStyle = false;
 			} else curStr += c;
 		}
 		if(curStr.length() > 0) {
-			TextComponent tmp = new TextComponent(curStr);
-			tmp.withStyle(curStyle);
+			TextComponent tmp = BitwiseStyling.makeEncapsulatingTextComponent(curStr, enableStyles ? curStyle : 0);
 			tmp.withStyle(curColor);
 			newMsg.append(tmp);
 		}
@@ -78,7 +80,7 @@ public final class TextFormatter {
 					curStr += "&";
 				} else nextIsStyle = true;
 			} else if(nextIsStyle) {
-				if(isColorOrStyleChar(c)) {
+				if(isColorOrStyle(c)) {
 					newMsg += curStr;
 					curStr = "";
 				} else curStr += ("&" + c);
@@ -98,8 +100,8 @@ public final class TextFormatter {
 				if(checkNext) checkNext = false;
 				else checkNext = true;
 			} else if(checkNext) {
-				if(checkColors) { if(getColor(c, null) != null) return true; }
-				else { if(getStyle(c, null) != null) return true; }
+				if(checkColors) { if(isColor(c)) return true; }
+				else { if(isStyle(c)) return true; }
 			}
 		}
 		return false;
@@ -109,16 +111,8 @@ public final class TextFormatter {
 			   "&fDark:   &4&&4 &6&&6 &1&&1 &2&&2 &3&&3 &5&&5 &0&&0 &8&&8\n" + 
 			   "&fStyles: &l&&l&r &n&&n&r &o&&o&r &m&&m&r &k&&k&r\n";
 	}
-	public static final boolean isColorOrStyleChar(char c) {
-		return getColor(c, null) != null || getStyle(c, null) != null;
-	}
-	public static final boolean isColorChar(char c) {
-		return getColor(c, null) != null;
-	}
-	public static final boolean isStyleChar(char c) {
-		return getStyle(c, null) != null;
-	}
-    private static final ChatFormatting getColor(char c, ChatFormatting cur) {
+
+	private static final ChatFormatting getColor(char c, ChatFormatting cur) {
     	switch(c) {
 	    	case '0': return ChatFormatting.BLACK;
 	    	case '1': return ChatFormatting.DARK_BLUE;
@@ -140,15 +134,17 @@ public final class TextFormatter {
 			default: return cur;
     	}
     }
-    private static final ChatFormatting getStyle(char c, ChatFormatting cur) {
-    	switch(c) {
-	    	case 'l': return ChatFormatting.BOLD;
-			case 'n': return ChatFormatting.UNDERLINE;
-			case 'o': return ChatFormatting.ITALIC;
-			case 'k': return ChatFormatting.OBFUSCATED;
-			case 'm': return ChatFormatting.STRIKETHROUGH;
-			case 'r': return ChatFormatting.RESET;
-			default: return cur;
-    	}
+	private static final boolean isColorOrStyle(char c) {
+		return isColor(c) || isStyle(c);
+	}
+	private static final boolean isColor(char c) {
+		if(c >= '0' && c <= '9') return true;
+		if(c >= 'a' && c <= 'f') return true;
+    	return false;
+    }
+    private static final boolean isStyle(char c) {
+    	if(c >= 'k' && c <= 'o') return true;
+    	if(c == 'r') return true;
+    	return false;
     }
 }

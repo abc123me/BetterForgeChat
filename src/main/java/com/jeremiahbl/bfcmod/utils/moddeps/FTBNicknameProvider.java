@@ -1,5 +1,7 @@
 package com.jeremiahbl.bfcmod.utils.moddeps;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.jeremiahbl.bfcmod.utils.INicknameProvider;
 import com.mojang.authlib.GameProfile;
 
@@ -16,4 +18,8 @@ public class FTBNicknameProvider implements INicknameProvider {
 			return data.nick;
 		return null;
 	}
+	@Override public @NonNull String getProviderName() {
+		return "FTB Essentials";
+	}
+	
 }

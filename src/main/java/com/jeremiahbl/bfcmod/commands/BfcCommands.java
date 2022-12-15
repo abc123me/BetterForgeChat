@@ -17,7 +17,9 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraftforge.server.permission.nodes.PermissionNode;
 
 public class BfcCommands {
-	private static final Iterable<String> bfcModSubCommands = Arrays.asList(new String[] { "info", "colors", "reload" });
+	private static final Iterable<String> bfcModSubCommands = Arrays.asList(new String[] { 
+			"info", "colors", "reload", "test"
+	});
 	
 	protected static boolean checkPermission(CommandSourceStack c, PermissionNode<Boolean> node) {
 		try {
@@ -57,25 +59,37 @@ public class BfcCommands {
 			else return failNoPermission(ctx);
 		} else if(arg.contentEquals("info")) {
 			if(checkContextPermission(ctx, PermissionsHandler.bfcModCommandInfoSubCommand)) {
+				boolean hasMetaProv = BetterForgeChat.instance.metadataProvider != null;
+				boolean hasNickProv = BetterForgeChat.instance.nicknameProvider != null;
+				String metaProvName = hasMetaProv ? BetterForgeChat.instance.metadataProvider.getProviderName() : "";
+				String nickProvName = hasNickProv ? BetterForgeChat.instance.nicknameProvider.getProviderName() : "";
+				if(hasMetaProv) metaProvName = " (via " + metaProvName + ")";
+				if(hasNickProv) nickProvName = " (via " + nickProvName + ")";
 				ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText(
-						"Forge+LitePerms Chat Mod (c) Jeremiah Lowe 2022-2023\n"
-						+ BetterForgeChat.MODID + " " + BetterForgeChat.VERSION), false);
+						BetterForgeChat.CHAT_ID_STR + "\n&eMod ID: &d" + BetterForgeChat.MODID + "    &r&eMod version: &d" + BetterForgeChat.VERSION + " (forge)&r\n\n"
+						+ (hasMetaProv ? "&a&lWITH" : "&c&lWITHOUT") + "&r&e metadata integration" + metaProvName + "&r\n"
+						+ (hasNickProv ? "&a&lWITH" : "&c&lWITHOUT") + "&r&e nickname integration" + nickProvName + "&r\n"), false);
 				return 1;
 			} else return failNoPermission(ctx);
 		} else if(arg.contentEquals("reload")) {
 			if(checkContextPermission(ctx, PermissionsHandler.bfcModCommandInfoSubCommand)) {
 				ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText(
-						"Forge+LitePerms Chat Mod (c) Jeremiah Lowe 2022-2023\n"
-						+ "Reload method ran"), false);
+						BetterForgeChat.CHAT_ID_STR + "Reload method ran"), false);
 				
 				return 1;
 			} else return failNoPermission(ctx);
+		} else if(arg.contentEquals("test")) {
+			ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText(
+					BetterForgeChat.CHAT_ID_STR
+							+ "&eColors & Styling internal debug test&r\n"
+							+ "Normal &lBold&r &nUnderline&r &oItalic&r &mStrikthrough&r &kObfuscated&r &rReset\n"
+							+ "Normal &lBold &nUnderline &oItalic &mStrikthrough &kObfuscated &rReset"), false);
+			return 1;
 		} else return 0;
 	}
 	public static int colorCommand(CommandContext<CommandSourceStack> ctx) {
 		ctx.getSource().sendSuccess(TextFormatter.stringToFormattedText(
-				"Forge+LitePerms Chat Mod (c) Jeremiah Lowe 2022-2023\n"
-						+ TextFormatter.colorString()), false);
+				BetterForgeChat.CHAT_ID_STR + TextFormatter.colorString()), false);
 		return 1;
 	}
 }
