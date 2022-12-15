@@ -4,7 +4,7 @@ import com.jeremiahbl.bfcmod.BetterForgeChat;
 import com.jeremiahbl.bfcmod.commands.NickCommands;
 import com.jeremiahbl.bfcmod.config.ConfigHandler;
 import com.jeremiahbl.bfcmod.utils.IntegratedNicknameProvider;
-import com.jeremiahbl.bfcmod.utils.moddeps.DiscordHandler;
+import com.jeremiahbl.bfcmod.utils.moddeps.Discord4jHandler;
 import com.jeremiahbl.bfcmod.utils.moddeps.FTBNicknameProvider;
 import com.jeremiahbl.bfcmod.utils.moddeps.LuckPermsProvider;
 
@@ -27,17 +27,17 @@ public class ExternalModLoadingEvent {
 	private void loadDiscordIntegration() {
 		try {
 			if(ConfigHandler.config.enableDiscordBotIntegration.get()) {
-				BetterForgeChat.instance.discordHandler = DiscordHandler.bfcFactory();
+				BetterForgeChat.instance.discordProvider = Discord4jHandler.bfcFactory();
 				BetterForgeChat.instance.registerDiscordChatHandler();
 			} else BetterForgeChat.LOGGER.info("Discord API was disabled, we won't use it!");
 		} catch(Error e2) { // Could have a NoClassDefFoundError here!
-			BetterForgeChat.instance.discordHandler = null;
+			BetterForgeChat.instance.discordProvider = null;
 		   	BetterForgeChat.LOGGER.warn("WARNING - Discord API wasn't found, we won't use it!");
 		}
 	}
 	private void unloadDiscordIntegration() {
-		if(BetterForgeChat.instance.discordHandler != null)
-			BetterForgeChat.instance.discordHandler.disconnectAPI();
+		if(BetterForgeChat.instance.discordProvider != null)
+			BetterForgeChat.instance.discordProvider.disconnectAPI();
 	}
 	private void loadIntegratedNicknameProvider() {
 		if (BetterForgeChat.instance.nicknameProvider == null && 

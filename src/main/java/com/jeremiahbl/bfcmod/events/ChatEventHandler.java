@@ -93,8 +93,8 @@ public class ChatEventHandler implements IReloadable, IDiscordListener {
 		if(markdownEnabled && enableStyle && PermissionsHandler.playerHasPermission(uuid, PermissionsHandler.markdownChatNode))
 			msg = MarkdownFormatter.markdownStringToFormattedString(msg);
 		// Send via discord
-		if(BetterForgeChat.instance.discordHandler != null)
-			BetterForgeChat.instance.discordHandler.sendChatMessage(profile, name, msg);
+		if(BetterForgeChat.instance.discordProvider != null)
+			BetterForgeChat.instance.discordProvider.sendChatMessage(profile, name, msg);
 		// Start generating the main TextComponent
 		TextComponent msgComp = TextFormatter.stringToFormattedText(msg, enableColor, enableStyle);
 		// Append the hover and click event crap
@@ -117,15 +117,15 @@ public class ChatEventHandler implements IReloadable, IDiscordListener {
 	public void onPlayerJoin(PlayerLoggedInEvent ple) {
 		GameProfile profile = ple.getPlayer().getGameProfile();
 		String name = BetterForgeChatUtilities.getRawPreferredPlayerName(profile);
-		if(BetterForgeChat.instance.discordHandler != null)
-			BetterForgeChat.instance.discordHandler.sendPlayerMessage(profile, TextFormatter.removeTextFormatting(name), false);
+		if(BetterForgeChat.instance.discordProvider != null)
+			BetterForgeChat.instance.discordProvider.sendPlayerMessage(profile, TextFormatter.removeTextFormatting(name), false);
 	}
 	@SubscribeEvent
 	public void onPlayerLeave(PlayerLoggedOutEvent ple) {
 		GameProfile profile = ple.getPlayer().getGameProfile();
 		String name = BetterForgeChatUtilities.getRawPreferredPlayerName(profile);
-		if(BetterForgeChat.instance.discordHandler != null)
-			BetterForgeChat.instance.discordHandler.sendPlayerMessage(profile, TextFormatter.removeTextFormatting(name), true);
+		if(BetterForgeChat.instance.discordProvider != null)
+			BetterForgeChat.instance.discordProvider.sendPlayerMessage(profile, TextFormatter.removeTextFormatting(name), true);
 	}
 	@SubscribeEvent
 	public void onPlayerDeath(LivingDeathEvent lde) {

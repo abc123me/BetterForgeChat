@@ -25,7 +25,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class DiscordHandler implements IDiscordInterface {
+public class Discord4jHandler implements IDiscordInterface {
 	private GatewayDiscordClient client = null;
 	private String token = null, channel = null;
 	private RestChannel msgChannel = null;
@@ -35,7 +35,7 @@ public class DiscordHandler implements IDiscordInterface {
 	private String playerChatFormat = null;
 	private boolean allowMentions = false;
 	
-	public DiscordHandler() {
+	public Discord4jHandler() {
 		lists = new CopyOnWriteArrayList<IDiscordListener>();
 	}
 	
@@ -189,8 +189,8 @@ public class DiscordHandler implements IDiscordInterface {
 		client = null;
 	}
 
-	public static DiscordHandler bfcFactory() {
-		DiscordHandler handler = new DiscordHandler();
+	public static Discord4jHandler bfcFactory() {
+		Discord4jHandler handler = new Discord4jHandler();
 		BetterForgeChat.LOGGER.info("Loading Discord API Client configuration!");
 		handler.loadConfigOptions(false);
 		if(!handler.connectAPI()) return null;
@@ -201,4 +201,6 @@ public class DiscordHandler implements IDiscordInterface {
 	@Override public void registerDiscordListener(IDiscordListener list) {
 		lists.add(list);
 	}
+
+	@Override public String getProviderName() { return "Discord4J"; }
 }

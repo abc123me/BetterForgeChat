@@ -4,7 +4,6 @@ import com.jeremiahbl.bfcmod.commands.NickCommands;
 import com.jeremiahbl.bfcmod.config.*;
 import com.jeremiahbl.bfcmod.events.*;
 import com.jeremiahbl.bfcmod.utils.*;
-import com.jeremiahbl.bfcmod.utils.moddeps.DiscordHandler;
 import com.mojang.logging.LogUtils;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -29,7 +28,7 @@ public class BetterForgeChat {
     public static BetterForgeChat instance = null;
 
     // These all could be null
-    public DiscordHandler discordHandler = null;
+    public IDiscordInterface discordProvider = null;
     public IMetadataProvider metadataProvider = null;
     public INicknameProvider nicknameProvider = null;
     
@@ -84,7 +83,7 @@ public class BetterForgeChat {
 		configurationHandler.reloadConfigOptions();
 	}
 	public void registerDiscordChatHandler() {
-		if(discordHandler != null)
-			discordHandler.registerDiscordListener(chatHandler);
+		if(discordProvider != null)
+			discordProvider.registerDiscordListener(chatHandler);
 	}
 }

@@ -43,4 +43,10 @@ public interface IDiscordInterface extends IReloadable {
 	public void sendDeathMessage(GameProfile playerProfile, String playerChatName, String reason);
 	/** Disconnects from the discord API */
 	public void disconnectAPI();
+	/**
+	 * Gets the discord provider name
+	 * 
+	 * @return Discord provider name
+	 */
+	public String getProviderName();
 }
